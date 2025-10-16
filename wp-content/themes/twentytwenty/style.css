@@ -6582,47 +6582,140 @@ a.to-the-top > * {
 		width: calc(100% - 8rem);
 	}
 }
+/* ===== Footer Widget ===== */
+#footer {
+  background: #007b5e !important;
+  color: #fff;
+  padding: 60px 0;
+  font-size: 18px;
+}
+
+/* ===== Tiêu đề widget ===== */
+#footer .widget-title.subheading.heading-size-3 {
+  position: relative;
+  padding-left: 20px; /* khoảng cách để hiện dấu | */
+  margin-bottom: 20px;
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+}
+
+/* ===== Widget content ===== */
+#footer .widget-content ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+#footer .widget-content ul li {
+  padding: 3px 0;
+  transition: 0.3s all ease;
+  position: relative;
+  padding-left: 18px; /* để chứa dấu » */
+}
+
+/* Thêm dấu » trước mỗi liên kết */
+#footer .widget-content ul li::before {
+  content: "\00BB"; /* ký hiệu » */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #ffffff;
+  font-size: 24px;
+  line-height: 1.4;
+}
 
 
-/* Footer Style */
-.footer-dark {
-  background-color: #007b5e;
+
+#footer .widget-content ul li:hover {
+  margin-left: 5px;
+  font-weight: 700;
+}
+
+/* ===== Liên kết ===== */
+#footer a {
+  color: #ffffff;
+  text-decoration: none !important;
+}
+
+#footer a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Social icons ===== */
+#footer ul.social {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+}
+
+#footer ul.social li {
+  display: inline-block;
+  padding: 3px 6px;
+}
+
+#footer ul.social li a i {
+  font-size: 25px;
+  transition: 0.5s all ease;
+  color: #ffffff;
+}
+
+#footer ul.social li:hover a i {
+  font-size: 30px;
+  margin-top: -10px;
   color: #fff;
 }
 
-.footer-dark a {
-  color: #ffffff;
-  transition: 0.3s;
-}
-
-.footer-dark a:hover {
-  color: #eeeeee;
-}
-
-.footer-dark .social a i {
-  font-size: 22px;
-  margin: 0 10px;
-  transition: 0.3s;
-}
-
-.footer-dark .social a:hover i {
-  font-size: 26px;
-  margin-top: -5px;
-}
-
-.footer-dark p {
-  margin: 5px 0;
-  font-size: 14px;
-}
-
-.footer-dark .to-the-top {
-  display: inline-block;
-  margin-top: 10px;
-  font-size: 14px;
-}
-
+/* ===== Responsive ===== */
 @media (max-width: 767px) {
-  .footer-dark .social a i {
-    font-size: 20px;
+  #footer {
+    text-align: center;
   }
+
+  #footer .widget-title.subheading.heading-size-3 {
+    padding-left: 0;
+  }
+
+  #footer .widget-title.subheading.heading-size-3::before {
+    display: none;
+  }
+
+  #footer .widget-content ul li {
+    padding-left: 0;
+  }
+
+  #footer .widget-content ul li::before {
+    display: none;
+  }
+}
+
+/* Ẩn footer */
+#site-footer {
+  display: none !important;
+}
+
+/* Thanh | trước tiêu đề */
+
+#footer .widget-content h2 {
+  position: relative;
+  padding-left: 15px; /* tạo khoảng trống cho thanh dọc */
+  color: #ffffff;
+  font-size: 22px;
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+#footer .widget-content h2::before {
+  content: "";
+  position: absolute;
+  left: 0;           /* đặt sát mép trái */
+  top: 50%;          /* canh giữa theo chiều dọc */
+  transform: translateY(-50%);
+  height: 28px;      /* chiều cao thanh dọc */
+  width: 3px;        /* độ dày thanh dọc */
+  background-color: #eeeeee; /* màu thanh dọc (có thể đổi sang #fff) */
+  
 }

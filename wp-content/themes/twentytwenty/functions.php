@@ -431,6 +431,17 @@ function twentytwenty_sidebar_registration()
 			)
 		)
 	);
+	// Footer #3.
+	register_sidebar(
+		array_merge(
+			$shared_args,
+			array(
+				'name' => __('Footer #3', 'twentytwenty'),
+				'id' => 'sidebar-3',
+				'description' => __('Widgets in this area will be displayed in the third column in the footer.', 'twentytwenty'),
+			)
+		)
+	);
 }
 
 add_action('widgets_init', 'twentytwenty_sidebar_registration');
@@ -841,15 +852,17 @@ function twentytwenty_get_elements_array()
 }
 
 
-function custom_theme_enqueue_styles() {
-    // Gọi Bootstrap (nếu bạn chưa có)
-    wp_enqueue_style( 'bootstrap-css', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' );
+function custom_theme_enqueue_assets() {
+    // Bootstrap
+    wp_enqueue_style('bootstrap-css', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
+    wp_enqueue_script('bootstrap-js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js', array('jquery'), null, true);
 
-    // Gọi Font Awesome (phiên bản 6)
-    wp_enqueue_style( 'fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css' );
+    // Font Awesome
+    wp_enqueue_style('fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
-    // Gọi style.css của theme
-    wp_enqueue_style( 'theme-style', get_stylesheet_uri() );
+    // Theme Style
+    wp_enqueue_style('theme-style', get_stylesheet_uri());
 }
-add_action( 'wp_enqueue_scripts', 'custom_theme_enqueue_styles' );
+add_action('wp_enqueue_scripts', 'custom_theme_enqueue_assets');
+
 
