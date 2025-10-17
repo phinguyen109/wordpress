@@ -865,4 +865,18 @@ function custom_theme_enqueue_assets() {
 }
 add_action('wp_enqueue_scripts', 'custom_theme_enqueue_assets');
 
+// Bật hỗ trợ ảnh đại diện
+add_theme_support('post-thumbnails');
+
+// Kích thước ảnh tùy chỉnh
+add_image_size('fit-thumb', 360, 240, true);
+
+// Đảm bảo mỗi trang chỉ hiển thị số bài cụ thể (ví dụ: 5)
+function custom_posts_per_page($query) {
+	if (!is_admin() && $query->is_main_query() && (is_home() || is_archive())) {
+		$query->set('posts_per_page', 5);
+	}
+}
+add_action('pre_get_posts', 'custom_posts_per_page');
+
 
