@@ -44,22 +44,11 @@ $has_social_menu = has_nav_menu( 'social' );
     <div class="row">
       <div class="col-12 mt-3">
         <ul class="list-inline social text-center">
-          <?php
-          if ( $has_social_menu ) :
-            wp_nav_menu( array(
-              'theme_location' => 'social',
-              'container'      => '',
-              'items_wrap'     => '%3$s',
-              'depth'          => 1,
-            ) );
-          else :
-          ?>
             <li class="list-inline-item"><a href="#"><i class="fa fa-facebook"></i></a></li>
             <li class="list-inline-item"><a href="#"><i class="fa fa-twitter"></i></a></li>
             <li class="list-inline-item"><a href="#"><i class="fa fa-instagram"></i></a></li>
             <li class="list-inline-item"><a href="#"><i class="fa fa-google-plus"></i></a></li>
             <li class="list-inline-item"><a href="#"><i class="fa fa-envelope"></i></a></li>
-          <?php endif; ?>
         </ul>
       </div>
     </div>

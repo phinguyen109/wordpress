@@ -14,18 +14,19 @@ get_header();
 
 	<!-- Cột bên trái: Danh sách bài viết -->
 	<div class="news-main">
-		<?php if ( have_posts() ) : ?>
-			<?php while ( have_posts() ) : the_post(); ?>
-				<article id="post-<?php the_ID(); ?>" <?php post_class( 'news-item' ); ?>>
+		<?php if (have_posts()): ?>
+			<?php while (have_posts()):
+				the_post(); ?>
+				<article id="post-<?php the_ID(); ?>" <?php post_class('news-item'); ?>>
 
 					<!-- Ảnh đại diện -->
 					<div class="news-thumb">
 						<a href="<?php the_permalink(); ?>">
-							<?php 
-							if ( has_post_thumbnail() ) {
-								the_post_thumbnail( 'medium_large', array( 'class' => 'thumb-img' ) );
+							<?php
+							if (has_post_thumbnail()) {
+								the_post_thumbnail('medium_large', array('class' => 'thumb-img'));
 							} else {
-								echo '<img class="thumb-img" src="' . esc_url( get_template_directory_uri() . '/assets/images/no-image.jpg' ) . '" alt="' . esc_attr( get_the_title() ) . '">';
+								echo '<img class="thumb-img" src="' . esc_url(get_template_directory_uri() . '/assets/images/no-image.jpg') . '" alt="' . esc_attr(get_the_title()) . '">';
 							}
 							?>
 						</a>
@@ -34,16 +35,22 @@ get_header();
 					<!-- Nội dung -->
 					<div class="news-content">
 						<div class="news-date">
-							<span class="day"><?php echo esc_html( get_the_date( 'd' ) ); ?></span>
-							<span class="month"><?php echo mb_strtoupper( get_the_date( 'M' ) ); ?></span>
+							<span class="day"><?php echo esc_html(get_the_date('d')); ?></span>
+							<span class="month">
+								<?php
+								$month_number = get_the_date('n'); 
+								echo 'THÁNG ' . $month_number;
+								?>
+							</span>
 						</div>
+
 
 						<h2 class="news-title">
 							<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 						</h2>
 
 						<div class="news-excerpt">
-							<?php echo wp_trim_words( get_the_excerpt(), 30, '...' ); ?>
+							<?php echo wp_trim_words(get_the_excerpt(), 30, '...'); ?>
 						</div>
 
 						<a class="news-readmore" href="<?php the_permalink(); ?>">Xem thêm »</a>
@@ -54,16 +61,16 @@ get_header();
 			<!-- Phân trang -->
 			<div class="pagination-wrap">
 				<?php
-				the_posts_pagination( array(
-					'mid_size'  => 1,
+				the_posts_pagination(array(
+					'mid_size' => 3,
 					'prev_text' => __('« Trước', 'twentytwenty'),
 					'next_text' => __('Sau »', 'twentytwenty'),
 					'screen_reader_text' => '',
-				) );
+				));
 				?>
 			</div>
 
-		<?php else : ?>
+		<?php else: ?>
 			<p>Không có bài viết nào.</p>
 		<?php endif; ?>
 	</div>
@@ -75,14 +82,15 @@ get_header();
 			<?php
 			$featured = new WP_Query(array(
 				'posts_per_page' => 5,
-				'orderby'        => 'comment_count',
+				'orderby' => 'comment_count',
 			));
-			if ( $featured->have_posts() ) :
-				while ( $featured->have_posts() ) : $featured->the_post(); ?>
+			if ($featured->have_posts()):
+				while ($featured->have_posts()):
+					$featured->the_post(); ?>
 					<li class="sidebar-item">
 						<a href="<?php the_permalink(); ?>" class="sidebar-link">
-							<?php if ( has_post_thumbnail() ) : ?>
-								<?php the_post_thumbnail( 'thumbnail', array( 'class' => 'sidebar-thumb' ) ); ?>
+							<?php if (has_post_thumbnail()): ?>
+								<?php the_post_thumbnail('thumbnail', array('class' => 'sidebar-thumb')); ?>
 							<?php endif; ?>
 							<span class="sidebar-text"><?php the_title(); ?></span>
 						</a>
@@ -96,5 +104,5 @@ get_header();
 
 </main><!-- #site-content -->
 
-<?php get_template_part( 'template-parts/footer-menus-widgets' ); ?>
+<?php get_template_part('template-parts/footer-menus-widgets'); ?>
 <?php get_footer(); ?>
