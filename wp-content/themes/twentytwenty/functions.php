@@ -874,9 +874,13 @@ add_image_size('fit-thumb', 360, 240, true);
 // Đảm bảo mỗi trang chỉ hiển thị số bài cụ thể (ví dụ: 5)
 function custom_posts_per_page($query) {
 	if (!is_admin() && $query->is_main_query() && (is_home() || is_archive())) {
-		$query->set('posts_per_page', 5);
+		$query->set('posts_per_page', 3);
 	}
 }
 add_action('pre_get_posts', 'custom_posts_per_page');
 
+function custom_news_styles() {
+    wp_enqueue_style('news-style', get_template_directory_uri() . '/assets/css/news-style.css');
+}
+add_action('wp_enqueue_scripts', 'custom_news_styles');
 
