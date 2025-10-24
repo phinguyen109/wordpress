@@ -1285,7 +1285,7 @@ button.toggle {
 }
 
 .search-form .search-field {
-	width: 100%;
+	min-width: 200px;
 }
 
 .search-form .search-submit {
@@ -1478,7 +1478,7 @@ body:not(.enable-search-modal) .site-logo img {
 /* Header Navigation ------------------------- */
 
 .header-navigation-wrapper {
-	display: none;
+	display: flex;
 }
 
 /* Header Toggles ---------------------------- */
@@ -2165,7 +2165,8 @@ button.search-untoggle {
 .search-modal form {
 	margin: 0;
 	position: relative;
-	width: 100%;
+	/* width: 100%; */
+	min-width: 400px;
 }
 
 .search-modal .search-field {
@@ -5765,204 +5766,113 @@ a.to-the-top > * {
 	}
 }
 
-@media (min-width: 1000px) {
+@media ( min-width: 1000px ) {
 
 
-    /* Document Setup ------------------------ */
+	/* Document Setup ------------------------ */
 
-    /* Helper Classes ------------------------ */
+	/* Helper Classes ------------------------ */
 
-    /* Site Header --------------------------- */
+	/* Site Header --------------------------- */
 
-    #site-header {
-        z-index: 2;
-    }
+	#site-header {
+		z-index: 2;
+	}
 
-    .header-inner {
-        align-items: center;
-        display: flex;
-        justify-content: space-between;
-        padding: 2.8rem 0;
-    }
+	.header-inner {
+		align-items: center;
+		display: flex;
+		justify-content: space-between;
+		padding: 2.8rem 0;
+	}
 
-    .header-titles-wrapper {
-        margin-right: 4rem;
-        max-width: 50%;
-        padding: 0;
-        text-align: left;
-        gap: 30px;
+	.header-titles-wrapper {
+		margin-right: 4rem;
+		max-width: 50%;
+		padding: 0;
+		text-align: left;
+	}
 
-    }
+	.header-titles {
+		align-items: baseline;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		margin: -1rem 0 0 -2.4rem;
+	}
 
-    .header-titles {
-        align-items: baseline;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        margin: -1rem 0 0 -2.4rem;
-    }
+	.header-titles .site-title,
+	.header-titles .site-logo,
+	.header-titles .site-description {
+		margin: 1rem 0 0 2.4rem;
+	}
 
-    .header-titles .site-title,
-    .header-titles .site-logo,
-    .header-titles .site-description {
-        margin: 1rem 0 0 2.4rem;
-    }
+	.wp-custom-logo .header-titles {
+		align-items: center;
+	}
 
-    .wp-custom-logo .header-titles {
-        align-items: center;
-    }
+	/* HEADER NAVIGATION */
 
-    /* HEADER NAVIGATION */
+	.header-navigation-wrapper {
+		align-items: center;
+		display: flex;
+		width: 100%;
+	}
 
-    .header-navigation-wrapper {
-        align-items: center;
-        display: flex;
-    }
+	.primary-menu-wrapper {
+		display: block;
+		width: 100%;
+	}
 
-    .primary-menu-wrapper {
-        display: block;
-        width: 100%;
-    }
+	/* HEADER TOGGLES */
 
-    /* HEADER TOGGLES */
+	.mobile-search-toggle,
+	.mobile-nav-toggle {
+		display: none !important;
+	}
 
-    .mobile-search-toggle,
-    .mobile-nav-toggle {
-        display: none !important;
-    }
+	.primary-menu-wrapper + .header-toggles {
+		margin-left: 3rem;
+	}
 
-    .primary-menu-wrapper+.header-toggles {
-        margin-left: 3rem;
-    }
+	.header-toggles {
+		display: flex;
+		flex-shrink: 0;
+		margin-right: -3rem;
+	}
 
-    .header-toggles {
-        display: flex;
-        flex-shrink: 0;
-        margin-right: -3rem;
-    }
+	.header-inner .toggle {
+		height: 4.4rem;
+		padding: 0 3rem;
+		position: relative;
+		bottom: auto;
+		left: auto;
+		right: auto;
+		top: auto;
+		width: auto;
+	}
 
-    .header-inner .toggle {
-        height: 4.4rem;
-        padding: 0 3rem;
-        position: relative;
-        bottom: auto;
-        left: auto;
-        right: auto;
-        top: auto;
-        width: auto;
-    }
+	.header-inner .toggle-wrapper {
+		position: relative;
+	}
 
-    .header-inner .toggle-wrapper {
-        position: relative;
-    }
+	.header-inner .toggle-wrapper::before {
+		background: #dedfdf;
+		content: "";
+		display: block;
+		height: 2.7rem;
+		position: absolute;
+		left: 0;
+		top: calc(50% - 1.35rem);
+		width: 0.1rem;
+	}
 
-    .header-inner .toggle-wrapper::before {
-        background: #dedfdf;
-        content: "";
-        display: block;
-        height: 2.7rem;
-        position: absolute;
-        left: 0;
-        top: calc(50% - 1.35rem);
-        width: 0.1rem;
-    }
+	.header-inner .toggle-wrapper:first-child::before {
+		content: none;
+	}
 
-    .header-inner .toggle-wrapper:first-child::before {
-        content: none;
-    }
-
-    .header-inner .primary-menu-wrapper+.header-toggles .toggle-wrapper:first-child::before {
-        content: "";
-    }
-
-    .nav-toggle-wrapper:not(.has-expanded-menu) {
-        display: none;
-    }
-
-    .toggle-inner {
-        position: static;
-    }
-
-    .toggle-inner .toggle-text {
-        left: 0;
-        right: 0;
-        text-align: center;
-        top: calc(100% - 0.3rem);
-        width: auto;
-    }
-
-    .header-toggles:only-child .nav-toggle .toggle-inner {
-        padding-top: 0;
-    }
-
-    .header-toggles:only-child .toggle-inner {
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: center;
-    }
-
-    .header-toggles:only-child .toggle-inner .svg-icon {
-        order: 1;
-    }
-
-    .header-toggles:only-child .toggle-inner .toggle-text {
-        position: static;
-        padding-right: 20px;
-        font-size: 15px;
-        color: inherit;
-    }
-
-    /* Menu Modal ---------------------------- */
-
-    .menu-modal {
-        opacity: 1;
-        justify-content: flex-end;
-        padding: 0;
-        transition: background-color 0.3s ease-in, left 0s 0.3s, right 0s 0.3s;
-    }
-
-    .menu-modal.cover-modal {
-        background: rgba(0, 0, 0, 0);
-    }
-
-    .menu-modal.active {
-        background: rgba(0, 0, 0, 0.2);
-        transition: background-color 0.3s ease-out;
-    }
-
-    .menu-wrapper.section-inner {
-        width: calc(100% - 8rem);
-    }
-
-    .menu-modal-inner {
-        box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 0.1);
-        opacity: 0;
-        padding: 0;
-        transform: translateX(20rem);
-        transition: transform 0.2s ease-in, opacity 0.2s ease-in;
-        width: 50rem;
-    }
-
-    .menu-modal.active .menu-modal-inner {
-        opacity: 1;
-        transform: translateX(0);
-        transition-timing-function: ease-out;
-    }
-
-    .mobile-menu {
-        display: none;
-    }
-
-    .expanded-menu {
-        display: block;
-    }
-
-    .menu-bottom {
-        padding: 6rem 0;
-    }
-
-    .menu-bottom .social-menu {
-        justify-content: flex-start;
+	.header-inner .primary-menu-wrapper + .header-toggles .toggle-wrapper:first-child::before {
+		content: "";
 	}
 	/* Sub Page ------------------------------ */
 
@@ -6716,103 +6626,211 @@ a.to-the-top > * {
 #footer .widget-content h2::before {
   content: "";
   position: absolute;
-  left: 0;           /* đặt sát mép trái */
-  top: 50%;          /* canh giữa theo chiều dọc */
+  left: 0;           
+  top: 50%;          
   transform: translateY(-50%);
-  height: 28px;      /* chiều cao thanh dọc */
-  width: 3px;        /* độ dày thanh dọc */
-  background-color: #eeeeee; /* màu thanh dọc (có thể đổi sang #fff) */
+  height: 28px;     
+  width: 3px;       
+  background-color: #eeeeee; 
   
 }
 
-
-/* === ACCOUNT MENU === */
-.header-account {
-    position: relative;
+/* Tổng thể  */
+.news-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 40px 60px;
+  background: #f9f9f9;
+  font-family: 'Roboto', sans-serif;
 }
 
-.header-account .account-menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    font-size: 14px;
-    color: #333;
-    font-weight: 500;
-    border-radius: 6px;
-    transition: background 0.25s ease;
-    gap: 8px;
-    /* Khoảng cách giữa ảnh và chữ */
+/*  Cột chính */
+.news-main {
+  flex: 3;
 }
 
-.header-account .account-menu:hover {
-    background-color: #f5f5f5;
+/*  Bài viết */
+.news-item {
+  display: flex;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  overflow: hidden;
 }
 
-.header-account .account-avatar img {
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    display: block;
-    /* Đảm bảo ảnh default cũng fit */
+/*  Ảnh đại diện  */
+.news-thumb {
+  flex: 0 0 220px;
+  height: 160px;
+  overflow: hidden;
+  border-right: 1px solid #ddd;
 }
 
-.header-account .account-name {
-    font-size: 14px;
-    color: #222;
-    white-space: nowrap;
-    /* Ngăn chữ "Account" wrap line */
+.news-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-/* Phần dropdown giữ nguyên như cũ */
-.header-account .account-dropdown {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 100%;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    min-width: 160px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    z-index: 999;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+.news-thumb img:hover {
+  transform: scale(1.05);
 }
 
-.header-account .account-dropdown ul {
-    margin: 0;
-    padding: 6px 0;
-    list-style: none;
+/* Nội dung bài viết */
+.news-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px 25px;
+  flex: 1;
 }
 
-.header-account .account-dropdown li {
-    margin: 0;
+/* Ngày tháng */
+.news-date {
+  width: 80px;
+  text-align: center;
+  margin-right: 20px;
+  padding-right: 15px;
+  border-right: 1px solid #ccc;
 }
 
-.header-account .account-dropdown a {
-    display: block;
-    padding: 8px 14px;
-    font-size: 14px;
-    color: #333;
-    text-decoration: none;
-    transition: background 0.2s ease;
+.news-date .day {
+  display: block;
+  font-size: 36px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1;
 }
 
-.header-account .account-dropdown a:hover {
-    background-color: #f5f5f5;
-    color: #0073aa;
+.news-date .month {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #666;
+  margin-top: 4px;
 }
 
-.header-account:hover .account-dropdown {
-    display: block;
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    transition-delay: 0.1s;
+/* Tiêu đề và mô tả */
+.news-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #337ab7;
+  margin-bottom: 5px;
 }
+
+.news-title a {
+  text-decoration: none;
+  color: #337ab7;
+  transition: color 0.2s;
+}
+
+.news-title a:hover {
+  color: #1a5c9c;
+}
+
+.news-excerpt {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+/* =Nút xem thêm*/
+.news-readmore {
+  font-size: 13px;
+  color: #337ab7;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.news-readmore:hover {
+  text-decoration: underline;
+}
+
+/* Thanh sidebar */
+.news-sidebar {
+  flex: 1;
+  background: rgb(176, 223, 247);
+  padding: 20px;
+  border: 1px solid #ddd;
+  height: fit-content;
+}
+
+.sidebar-title {
+  font-size: 30px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #337ab7;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.sidebar-thumb {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  margin-right: 10px;
+  border-radius: 3px;
+}
+
+.sidebar-text {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+
+.sidebar-link:hover .sidebar-text {
+  color: #337ab7;
+}
+
+/* Phân trang */
+.pagination-wrap {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.pagination-wrap .page-numbers {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 0 4px;
+  border: 1px solid #ccc;
+  color: #333;
+  text-decoration: none;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.pagination-wrap .page-numbers.current,
+.pagination-wrap .page-numbers:hover {
+  background: #337ab7;
+  color: #fff;
+  border-color: #337ab7;
+}
+
+
+
+
+
+
 
 
 
