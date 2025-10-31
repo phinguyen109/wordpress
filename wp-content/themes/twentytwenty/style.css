@@ -2372,7 +2372,7 @@ body.template-full-width [class*="wp-block"].alignfull:not(.has-background) [cla
 /* Archive Header ---------------------------- */
 
 .archive-header {
-	background-color: #fff;
+	background-color: #f5efe0;
 	padding: 4rem 0;
 }
 
@@ -5149,6 +5149,7 @@ a.to-the-top > * {
 
 	.archive-header {
 		padding: 8rem 0;
+		width: 100%;
 	}
 
 	.reduced-spacing .archive-header {
@@ -6638,6 +6639,17 @@ a.to-the-top > * {
 /* Tổng thể  */
 .news-wrapper {
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 40px 60px;
+  background: #f9f9f9;
+  font-family: 'Roboto', sans-serif;
+}
+
+.new-content-wrapper {
+  display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 30px;
@@ -6701,7 +6713,7 @@ a.to-the-top > * {
 
 .news-date .day {
   display: block;
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 600;
   color: #333;
   line-height: 1;
@@ -6709,7 +6721,7 @@ a.to-the-top > * {
 
 .news-date .month {
   display: block;
-  font-size: 10px;
+  font-size: 8px;
   text-transform: uppercase;
   color: #666;
   margin-top: 4px;
@@ -6951,5 +6963,151 @@ a.to-the-top > * {
   color: #337ab7;
 }
 
+/* Search Results Styling */
+.archive-header {
+    margin-bottom: 40px;
+}
 
+.archive-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.archive-title .search-label {
+    color: #c9002a;
+    font-weight: normal;
+}
+
+.archive-subtitle {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* No Search Results Styling */
+.no-search-results-wrapper {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.search-suggestions-box {
+    max-width: 500px;
+    margin: 0 auto 50px auto;
+    text-align: left;
+}
+
+/* THÊM PHẦN NÀY: Thanh tìm kiếm ở dưới cùng */
+.bottom-search-form {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: left;
+    padding-top: 30px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.search-suggestions-label {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-weight: 500;
+    padding-left: 0;
+}
+
+/* CUSTOM SEARCH FORM STYLING - GIỐNG ẢNH */
+.custom-search-form {
+    width: 100%;
+}
+
+.search-form-inner {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+}
+
+.search-form-inner:focus-within {
+    border-color: #007cba;
+}
+
+.custom-search-form .search-field {
+    flex: 1;
+    padding: 14px 16px;
+    border: none;
+    font-size: 16px;
+    background: transparent;
+    outline: none;
+    color: #333;
+}
+
+.custom-search-form .search-field::placeholder {
+    color: #999;
+}
+
+.custom-search-form .search-submit {
+    padding: 14px 24px;
+    background: #27a243;
+    color: white;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+    margin: 2px;
+    border-radius: 6px;
+}
+
+.custom-search-form .search-submit:hover {
+    background: #27a243;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .archive-title {
+        font-size: 24px;
+    }
+    
+    .search-form-inner {
+        flex-direction: column;
+        border: none;
+        background: transparent;
+    }
+    
+    .custom-search-form .search-field {
+        width: 100%;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+    
+    .custom-search-form .search-submit {
+        width: 100%;
+        border-radius: 8px;
+        margin: 0;
+    }
+    
+    .search-suggestions-box,
+    .bottom-search-form {
+        padding: 0 20px;
+    }
+}
+
+/* Ensure proper spacing */
+.news-main {
+    position: relative;
+}
+
+.no-search-results-wrapper {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 50px 20px;
+    margin: 20px 0;
+}
 

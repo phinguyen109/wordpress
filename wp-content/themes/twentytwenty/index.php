@@ -11,22 +11,23 @@ get_header();
 ?>
 
 <main id="site-content" class="news-wrapper">
-
+	
 	<?php
 	// --- Phần xử lý tiêu đề & mô tả cho trang Search / Archive ---
-	$archive_title    = '';
+	$archive_title = '';
 	$archive_subtitle = '';
 
-	if ( is_search() ) {
+	if (is_search()) {
 		global $wp_query;
 
+		// SỬA LẠI: Hiển thị đúng định dạng "Search: “abc”" như ảnh
 		$archive_title = sprintf(
 			'%1$s %2$s',
-			'<span class="color-accent">' . __( 'Search:', 'twentytwenty' ) . '</span>',
+			'<span class="search-label">' . __('Search:', 'twentytwenty') . '</span>',
 			'&ldquo;' . get_search_query() . '&rdquo;'
 		);
 
-		if ( $wp_query->found_posts ) {
+		if ($wp_query->found_posts) {
 			$archive_subtitle = sprintf(
 				_n(
 					'We found %s result for your search.',
@@ -34,133 +35,181 @@ get_header();
 					$wp_query->found_posts,
 					'twentytwenty'
 				),
-				number_format_i18n( $wp_query->found_posts )
+				number_format_i18n($wp_query->found_posts)
 			);
 		} else {
-			$archive_subtitle = __( 'We could not find any results for your search. You can give it another try through the search form below.', 'twentytwenty' );
+			// Giữ nguyên thông báo không có kết quả
+			$archive_subtitle = __('We could not find any results for your search. You can give it another try through the search form below.', 'twentytwenty');
 		}
-	} elseif ( is_archive() && ! have_posts() ) {
-		$archive_title = __( 'Nothing Found', 'twentytwenty' );
-	} elseif ( ! is_home() ) {
-		$archive_title    = get_the_archive_title();
+	} elseif (is_archive() && !have_posts()) {
+		$archive_title = __('Nothing Found', 'twentytwenty');
+	} elseif (!is_home()) {
+		$archive_title = get_the_archive_title();
 		$archive_subtitle = get_the_archive_description();
 	}
 
-	if ( $archive_title || $archive_subtitle ) : ?>
+	if ($archive_title || $archive_subtitle): ?>
 		<header class="archive-header has-text-align-center header-footer-group">
 			<div class="archive-header-inner section-inner medium">
-				<?php if ( $archive_title ) : ?>
-					<h1 class="archive-title"><?php echo wp_kses_post( $archive_title ); ?></h1>
+				<?php if ($archive_title): ?>
+					<h1 class="archive-title"><?php echo wp_kses_post($archive_title); ?></h1>
 				<?php endif; ?>
 
-				<?php if ( $archive_subtitle ) : ?>
+				<?php if ($archive_subtitle): ?>
 					<div class="archive-subtitle section-inner thin max-percentage intro-text">
-						<?php echo wp_kses_post( wpautop( $archive_subtitle ) ); ?>
+						<?php echo wp_kses_post(wpautop($archive_subtitle)); ?>
 					</div>
 				<?php endif; ?>
+
+				<!-- THÊM FORM TÌM KIẾM VÀO ĐÂY -->
+					<div class="header-search-form">
+						<form role="search" method="get" class="custom-search-form" action="<?php echo esc_url(home_url('/')); ?>">
+							<div class="search-form-inner">
+								<input type="search" 
+									   class="search-field" 
+									   placeholder="Q Search topics or keywords" 
+									   value="<?php echo get_search_query(); ?>" 
+									   name="s" 
+									   aria-label="Search topics or keywords" />
+								<button type="submit" class="search-submit">Search</button>
+							</div>
+						</form>
+					</div>
 			</div>
 		</header>
+
 	<?php endif; ?>
+	
+	<!-- new-content-wrapper -->
+	<div class="new-content-wrapper">
+		<!-- Cột bên trái: Danh sách bài viết -->
+		<div class="news-main">
+			<?php if (have_posts()): ?>
+				<?php while (have_posts()):
+					the_post(); ?>
+					<article id="post-<?php the_ID(); ?>" <?php post_class('news-item'); ?>>
 
-	<!-- Cột bên trái: Danh sách bài viết -->
-	<div class="news-main">
-		<?php if ( have_posts() ) : ?>
-			<?php while ( have_posts() ) : the_post(); ?>
-				<article id="post-<?php the_ID(); ?>" <?php post_class('news-item'); ?>>
-
-					<!-- Ảnh đại diện -->
-					<div class="news-thumb">
-						<a href="<?php the_permalink(); ?>">
-							<?php
-							if ( has_post_thumbnail() ) {
-								the_post_thumbnail( 'medium_large', array( 'class' => 'thumb-img' ) );
-							} else {
-								echo '<img class="thumb-img" src="' . esc_url( get_template_directory_uri() . '/assets/images/no-image.jpg' ) . '" alt="' . esc_attr( get_the_title() ) . '">';
-							}
-							?>
-						</a>
-					</div>
-
-					<!-- Nội dung -->
-					<div class="news-content">
-						<div class="news-date">
-							<span class="day"><?php echo esc_html( get_the_date( 'd' ) ); ?></span>
-							<span class="month">
+						<!-- Ảnh đại diện -->
+						<div class="news-thumb">
+							<a href="<?php the_permalink(); ?>">
 								<?php
-								$month_number = get_the_date( 'n' );
-								echo 'THÁNG ' . $month_number;
+								if (has_post_thumbnail()) {
+									the_post_thumbnail('medium_large', array('class' => 'thumb-img'));
+								} else {
+									echo '<img class="thumb-img" src="' . esc_url(get_template_directory_uri() . '/assets/images/no-image.jpg') . '" alt="' . esc_attr(get_the_title()) . '">';
+								}
 								?>
-							</span>
+							</a>
 						</div>
 
-						<h2 class="news-title">
-							<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-						</h2>
+						<!-- Nội dung -->
+						<div class="news-content">
+							<div class="news-date">
+								<span class="day"><?php echo esc_html(get_the_date('d')); ?></span>
+								<span class="month">
+									<?php
+									$month_number = get_the_date('n');
+									echo 'THÁNG ' . $month_number;
+									?>
+								</span>
+							</div>
 
-						<div class="news-excerpt">
-							<?php echo wp_trim_words( get_the_excerpt(), 30, '...' ); ?>
+							<h2 class="news-title">
+								<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+							</h2>
+
+							<div class="news-excerpt">
+								<?php echo wp_trim_words(get_the_excerpt(), 30, '...'); ?>
+							</div>
+
+							<a class="news-readmore" href="<?php the_permalink(); ?>">Xem thêm »</a>
 						</div>
+					</article>
+				<?php endwhile; ?>
 
-						<a class="news-readmore" href="<?php the_permalink(); ?>">Xem thêm »</a>
+				<!-- Phân trang -->
+				<div class="pagination-wrap">
+					<?php
+					the_posts_pagination(array(
+						'mid_size' => 3,
+						'prev_text' => __('« Trước', 'twentytwenty'),
+						'next_text' => __('Sau »', 'twentytwenty'),
+						'screen_reader_text' => '',
+					));
+					?>
+				</div>
+
+			<?php elseif (is_search()): ?>
+				<!-- Không có kết quả tìm kiếm - THIẾT KẾ CHUẨN ẢNH -->
+				<div class="no-search-results-wrapper">
+					<div class="search-suggestions-box">
+						<div class="search-suggestions-label">Q Search topics or keywords</div>
+						<!-- CUSTOM SEARCH FORM GIỐNG ẢNH -->
+						<form role="search" method="get" class="custom-search-form" action="<?php echo esc_url(home_url('/')); ?>">
+							<div class="search-form-inner">
+								<input type="search" 
+									   class="search-field" 
+									   placeholder="" 
+									   value="<?php echo get_search_query(); ?>" 
+									   name="s" 
+									   aria-label="Search topics or keywords" />
+								<button type="submit" class="search-submit">Search</button>
+							</div>
+						</form>
 					</div>
-				</article>
-			<?php endwhile; ?>
+					
+					<!-- THÊM PHẦN NÀY: Thanh tìm kiếm ở dưới cùng -->
+					<div class="bottom-search-form">
+						<div class="search-suggestions-label">Q Search topics or keywords</div>
+						<!-- CUSTOM SEARCH FORM GIỐNG ẢNH -->
+						<form role="search" method="get" class="custom-search-form" action="<?php echo esc_url(home_url('/')); ?>">
+							<div class="search-form-inner">
+								<input type="search" 
+									   class="search-field" 
+									   placeholder="" 
+									   value="<?php echo get_search_query(); ?>" 
+									   name="s" 
+									   aria-label="Search topics or keywords" />
+								<button type="submit" class="search-submit">Search</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			<?php else: ?>
+				<p>Không có bài viết nào.</p>
+			<?php endif; ?>
+		</div>
 
-			<!-- Phân trang -->
-			<div class="pagination-wrap">
+		<!-- Cột bên phải: Bài viết nổi bật -->
+		<aside class="news-sidebar">
+			<h3 class="sidebar-title">Bài viết nổi bật</h3>
+			<ul class="sidebar-list">
 				<?php
-				the_posts_pagination( array(
-					'mid_size' => 3,
-					'prev_text' => __( '« Trước', 'twentytwenty' ),
-					'next_text' => __( 'Sau »', 'twentytwenty' ),
-					'screen_reader_text' => '',
-				) );
-				?>
-			</div>
+				$featured = new WP_Query(array(
+					'posts_per_page' => 5,
+					'orderby' => 'comment_count',
+				));
 
-		<?php elseif ( is_search() ) : ?>
-			<!-- Không có kết quả tìm kiếm -->
-			<div class="no-search-results-form section-inner thin">
-				<?php
-				get_search_form( array(
-					'aria_label' => __( 'search again', 'twentytwenty' ),
-				) );
+				if ($featured->have_posts()):
+					while ($featured->have_posts()):
+						$featured->the_post(); ?>
+						<li class="sidebar-item">
+							<a href="<?php the_permalink(); ?>" class="sidebar-link">
+								<?php if (has_post_thumbnail()): ?>
+									<?php the_post_thumbnail('thumbnail', array('class' => 'sidebar-thumb')); ?>
+								<?php endif; ?>
+								<span class="sidebar-text"><?php the_title(); ?></span>
+							</a>
+						</li>
+					<?php endwhile;
+					wp_reset_postdata();
+				endif;
 				?>
-			</div>
-		<?php else : ?>
-			<p>Không có bài viết nào.</p>
-		<?php endif; ?>
+			</ul>
+		</aside>
 	</div>
-
-	<!-- Cột bên phải: Bài viết nổi bật -->
-	<aside class="news-sidebar">
-		<h3 class="sidebar-title">Bài viết nổi bật</h3>
-		<ul class="sidebar-list">
-			<?php
-			$featured = new WP_Query( array(
-				'posts_per_page' => 5,
-				'orderby'        => 'comment_count',
-			) );
-
-			if ( $featured->have_posts() ) :
-				while ( $featured->have_posts() ) :
-					$featured->the_post(); ?>
-					<li class="sidebar-item">
-						<a href="<?php the_permalink(); ?>" class="sidebar-link">
-							<?php if ( has_post_thumbnail() ) : ?>
-								<?php the_post_thumbnail( 'thumbnail', array( 'class' => 'sidebar-thumb' ) ); ?>
-							<?php endif; ?>
-							<span class="sidebar-text"><?php the_title(); ?></span>
-						</a>
-					</li>
-				<?php endwhile;
-				wp_reset_postdata();
-			endif;
-			?>
-		</ul>
-	</aside>
 
 </main><!-- #site-content -->
 
-<?php get_template_part( 'template-parts/footer-menus-widgets' ); ?>
-<?php get_footer(); ?>
+<?php get_template_part('template-parts/footer-menus-widgets'); ?>
+<?php get_footer();
