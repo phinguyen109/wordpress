@@ -1,61 +1,38 @@
 <?php
 /**
- * Displays the next and previous post navigation in single posts.
- *
- * @package WordPress
- * @subpackage Twenty_Twenty
- * @since Twenty Twenty 1.0
+ * Navigation - hiển thị bài trước / bài sau
  */
 
-$next_post = get_next_post();
 $prev_post = get_previous_post();
+$next_post = get_next_post();
+?>
 
-if ( $next_post || $prev_post ) {
+<nav class="post-navigation-custom">
+    <?php if ($prev_post): ?>
+        <a class="nav-item prev-post" href="<?php echo get_permalink($prev_post->ID); ?>">
+            <div class="nav-date-vertical">
+                <div class="day"><?php echo get_the_date('d', $prev_post->ID); ?></div>
+                <div class="divider"></div>
+                <div class="month-year">
+                    <div class="month"><?php echo get_the_date('m', $prev_post->ID); ?></div>
+                    <div class="year"><?php echo get_the_date('y', $prev_post->ID); ?></div>
+                </div>
+            </div>
+            <div class="nav-title"><?php echo get_the_title($prev_post->ID); ?></div>
+        </a>
+    <?php endif; ?>
 
-	$pagination_classes = '';
-
-	if ( ! $next_post ) {
-		$pagination_classes = ' only-one only-prev';
-	} elseif ( ! $prev_post ) {
-		$pagination_classes = ' only-one only-next';
-	}
-
-	?>
-
-	<nav class="pagination-single section-inner<?php echo esc_attr( $pagination_classes ); ?>" aria-label="<?php esc_attr_e( 'Post', 'twentytwenty' ); ?>">
-
-		<hr class="styled-separator is-style-wide" aria-hidden="true" />
-
-		<div class="pagination-single-inner">
-
-			<?php
-			if ( $prev_post ) {
-				?>
-
-				<a class="previous-post" href="<?php echo esc_url( get_permalink( $prev_post->ID ) ); ?>">
-					<span class="arrow" aria-hidden="true">&larr;</span>
-					<span class="title"><span class="title-inner"><?php echo wp_kses_post( get_the_title( $prev_post->ID ) ); ?></span></span>
-				</a>
-
-				<?php
-			}
-
-			if ( $next_post ) {
-				?>
-
-				<a class="next-post" href="<?php echo esc_url( get_permalink( $next_post->ID ) ); ?>">
-					<span class="arrow" aria-hidden="true">&rarr;</span>
-						<span class="title"><span class="title-inner"><?php echo wp_kses_post( get_the_title( $next_post->ID ) ); ?></span></span>
-				</a>
-				<?php
-			}
-			?>
-
-		</div><!-- .pagination-single-inner -->
-
-		<hr class="styled-separator is-style-wide" aria-hidden="true" />
-
-	</nav><!-- .pagination-single -->
-
-	<?php
-}
+    <?php if ($next_post): ?>
+        <a class="nav-item next-post" href="<?php echo get_permalink($next_post->ID); ?>">
+            <div class="nav-date-vertical">
+                <div class="day"><?php echo get_the_date('d', $next_post->ID); ?></div>
+                <div class="divider"></div>
+                <div class="month-year">
+                    <div class="month"><?php echo get_the_date('m', $next_post->ID); ?></div>
+                    <div class="year"><?php echo get_the_date('y', $next_post->ID); ?></div>
+                </div>
+            </div>
+            <div class="nav-title"><?php echo get_the_title($next_post->ID); ?></div>
+        </a>
+    <?php endif; ?>
+</nav>
