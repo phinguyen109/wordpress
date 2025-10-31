@@ -106,13 +106,38 @@ if ( comments_open() || pings_open() ) {
 		echo '<hr class="styled-separator is-style-wide" aria-hidden="true" />';
 	}
 
-	comment_form(
-		array(
-			'class_form'         => 'section-inner thin max-percentage',
-			'title_reply_before' => '<h2 id="reply-title" class="comment-reply-title">',
-			'title_reply_after'  => '</h2>',
-		)
-	);
+    comment_form( array(
+        'class_form'           => 'comment-form card my-5',
+        'title_reply_before'   => '
+			<div class="card-header">
+				<ul class="nav nav-tabs card-header-tabs">
+					<li class="nav-item">
+						<a class="nav-link active" id="posts-tab" href="#" role="tab">',
+        'title_reply'          => esc_html__( 'Make a Post', 'textdomain' ),
+        'title_reply_after'    => '</a></li></ul></div>
+			<div class="card-body">',
+
+        'comment_notes_before' => '',
+        'comment_notes_after'  => '</div>', // đóng card-body
+
+        'logged_in_as'         => '', // ẩn “Logged in as...”
+
+        'fields'               => array(
+            'author' => '',
+            'email'  => '',
+            'url'    => '',
+        ),
+
+        // Không dùng class nội bộ -> clean HTML
+        'comment_field'        => '
+			<textarea id="comment" name="comment" placeholder="' . esc_attr__( 'What are you thinking...', 'textdomain' ) . '" required></textarea>',
+
+        'submit_field'        => '
+			<div class="text-right">
+				<button type="submit">share</button>
+			</div>',
+    ) );
+
 
 } elseif ( is_single() ) {
 
