@@ -7347,3 +7347,26 @@ body.single .entry-content p {
 	margin-top: 5px;
 	margin-left: 100px;
 }
+/*Comment*/
+.comment-respond {
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	background-color: #fff;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	margin: 2rem 0;
+	overflow: hidden; 
+}
+.nav-link{
+	font-size: 20px;
+	text-decoration: none;
+}
+.text-right{
+	padding: 30px;
+}
+.text-right button{
+	background-color: #007bff !important;
+	text-transform: capitalize !important;
+	border-radius: 5px;
+	padding: 10px;
+	margin-top: -80px !important;
+}
