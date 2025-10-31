@@ -1,104 +1,102 @@
 <?php
 /**
- * The default template for displaying content
- *
- * Used for both singular and index.
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
- *
- * @package WordPress
- * @subpackage Twenty_Twenty
- * @since Twenty Twenty 1.0
+ * Template hiển thị bài viết
+ * Format giống hình mẫu (Ngày bên trái, nội dung bên phải)
  */
 
-$class='';
-if (!is_single()){
-	$class='danh-sach';
-}
-?>
+if ( is_single() ) { ?>
+    <article <?php post_class('single-post'); ?> id="post-<?php the_ID(); ?>">
 
-<article <?php post_class($class); ?> id="post-<?php the_ID(); ?>">
+        <!-- Ảnh đại diện -->
+        <?php if ( has_post_thumbnail() ) : ?>
+            <div class="single-thumbnail">
+                <?php the_post_thumbnail('large'); ?>
+            </div>
+        <?php endif; ?>
 
-	<?php
+        <!-- Nội dung -->
+        <div class="post-content">
 
-	get_template_part( 'template-parts/entry-header' );
+            <!-- Gộp tiêu đề và vòng tròn ngày vào chung -->
+            <div class="post-header">
+                <h1 class="post-title"><?php the_title(); ?></h1>
+                <div class="date-circle">
+                    <div class="date-left">
+                        <div class="day"><?php echo get_the_date('d'); ?></div>
+                        <div class="divider"></div>
+                        <div class="month"><?php echo get_the_date('m'); ?></div>
+                    </div>
+                    <div class="year"><?php echo get_the_date('y'); ?></div>
+                </div>
+            </div>
+            <div class="line-divider"></div>
 
-	if ( ! is_search() ) {
-		get_template_part( 'template-parts/featured-image' );
-	}
+            <!-- Nội dung bài viết -->
+            <div class="entry-content">
+                <?php the_content(__('Continue reading', 'twentytwenty')); ?>
 
-	?>
+                <?php
+                // Nếu bài viết chia nhiều trang bằng <!--nextpage-->
+                wp_link_pages(array(
+                    'before' => '<div class="page-links">Trang:',
+                    'after'  => '</div>',
+                ));
+                ?>
+            </div>
 
-	<div class="post-inner <?php echo is_page_template( 'templates/template-full-width.php' ) ? '' : 'thin'; ?> ">
+        </div>
 
-		<div class="entry-content">
+        <!-- Navigation Comment -->
+        <div class="post-footer section-inner">
+            <?php
+            get_template_part('template-parts/navigation');
 
-			<?php
-			if ( is_search() || ! is_singular() && 'summary' === get_theme_mod( 'blog_content', 'full' ) ) {
-				the_excerpt();
-			} else {
-				
-				if(is_single()){
-					the_content( __( 'Continue reading', 'twentytwenty' ) );
-				} else{
-					$post = get_post();
-					echo substr($post->post_content, 0, 100) . '...';
-				}
-			}
-			?>
+            // Hiển thị comment nếu bật
+            if ((comments_open() || get_comments_number()) && !post_password_required()) {
+                echo '<div class="comments-wrapper section-inner">';
+                comments_template();
+                echo '</div>';
+            }
+            ?>
+        </div>
 
-		</div><!-- .entry-content -->
+    </article>
 
-	</div><!-- .post-inner -->
+<?php } else { ?>
 
-	<div class="section-inner">
-		<?php
-		wp_link_pages(
-			array(
-				'before'      => '<nav class="post-nav-links bg-light-background" aria-label="' . esc_attr__( 'Page', 'twentytwenty' ) . '"><span class="label">' . __( 'Pages:', 'twentytwenty' ) . '</span>',
-				'after'       => '</nav>',
-				'link_before' => '<span class="page-number">',
-				'link_after'  => '</span>',
-			)
-		);
+    <!-- Danh sách bài viết -->
+    <article <?php post_class('news-item'); ?> id="post-<?php the_ID(); ?>">
 
-		edit_post_link();
+        <div class="news-card">
 
-		// Single bottom post meta.
-		twentytwenty_the_post_meta( get_the_ID(), 'single-bottom' );
+            <!-- Ảnh đại diện -->
+            <?php if ( has_post_thumbnail() ) : ?>
+                <div class="news-thumb">
+                    <a href="<?php the_permalink(); ?>">
+                        <?php the_post_thumbnail('medium_large'); ?>
+                    </a>
+                </div>
+            <?php endif; ?>
 
-		if ( post_type_supports( get_post_type( get_the_ID() ), 'author' ) && is_single() ) {
+            <!-- Cột ngày tháng -->
+            <div class="news-date">
+                <div class="day"><?php echo get_the_date('d'); ?></div>
+                <div class="month">THÁNG <?php echo get_the_date('m'); ?></div>
+            </div>
 
-			get_template_part( 'template-parts/entry-author-bio' );
+            <!-- Nội dung bài viết -->
+            <div class="news-content">
+                <div class="news-text">
+                    <h2 class="news-title">
+                        <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                    </h2>
+                    <div class="news-excerpt">
+                        <?php echo wp_trim_words(get_the_excerpt(), 50, ' [...]'); ?>
+                    </div>
+                </div>
+            </div>
 
-		}
-		?>
+        </div>
+    </article>
 
-	</div><!-- .section-inner -->
-
-	<?php
-
-	if ( is_single() ) {
-
-		get_template_part( 'template-parts/navigation' );
-
-	}
-
-	/*
-	 * Output comments wrapper if it's a post, or if comments are open,
-	 * or if there's a comment number – and check for password.
-	 */
-	if ( ( is_single() || is_page() ) && ( comments_open() || get_comments_number() ) && ! post_password_required() ) {
-		?>
-
-		<div class="comments-wrapper section-inner">
-
-			<?php comments_template(); ?>
-
-		</div><!-- .comments-wrapper -->
-
-		<?php
-	}
-	?>
-
-</article><!-- .post -->
+<?php } ?>
