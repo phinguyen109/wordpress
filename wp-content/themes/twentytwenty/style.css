@@ -7370,3 +7370,73 @@ body.single .entry-content p {
 	padding: 10px;
 	margin-top: -80px !important;
 }
+
+/* Categories */
+.post-categories {
+	background-color: #fff;
+	background-size: 10px 10px;
+	border: 1px solid #e6e6e6;
+	border-radius: 4px;
+	padding: 20px;
+	margin-top: 1rem;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Tiêu đề Categories */
+.post-categories h3 {
+	font-size: 20px;
+	font-weight: 700;
+	color: #333;
+	margin-bottom: 15px;
+	border-bottom: 3px double #eee;
+	padding-bottom: 8px;
+}
+
+/* Danh sách */
+.post-categories ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.post-categories li {
+	position: relative;
+	padding-left: 20px;
+	margin-bottom: 12px;
+	border-bottom: 1px solid #eee;
+	padding-bottom: 10px;
+}
+
+.post-categories li:last-child {
+	border-bottom: none;
+}
+
+/* Dấu chấm vàng */
+.post-categories li::before {
+	content: "•";
+	position: absolute;
+	left: 0;
+	top: 0;
+	color: #ffcc00;
+	font-size: 22px;
+	line-height: 1;
+}
+
+/* Link chuyên mục */
+.post-category {
+	text-decoration: none;
+	color: #5ca2e0;
+	font-size: 16px;
+	font-weight: 500;
+	transition: color 0.3s;
+}
+
+.post-category:hover {
+	color: #0056b3;
+	text-decoration: underline;
+}
+
+/* Container tổng */
+.container {
+	max-width: 1500px !important;
+}
