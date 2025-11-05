@@ -33,6 +33,117 @@
  *
  * @since Twenty Twenty 1.0
  */
+// AJAX load toàn bộ bài viết
+add_action('wp_ajax_load_all_posts', 'load_all_posts_callback');
+add_action('wp_ajax_nopriv_load_all_posts', 'load_all_posts_callback');
+
+function load_all_posts_callback()
+{
+	check_ajax_referer('load_more_posts', 'security');
+
+	$recent_posts = wp_get_recent_posts(array(
+		'numberposts' => -1,
+		'post_status' => 'publish'
+	));
+
+	ob_start();
+	foreach ($recent_posts as $post): ?>
+		<li class="latest-item">
+			<div class="latest-date">
+				<div class="day-month">
+					<span class="day"><?php echo get_the_date('d', $post['ID']); ?></span>
+					<hr class="divider">
+					<span class="month"><?php echo get_the_date('m', $post['ID']); ?></span>
+				</div>
+				<span class="year"><?php echo get_the_date('y', $post['ID']); ?></span>
+			</div>
+			<div class="latest-title">
+				<a href="<?php echo get_permalink($post['ID']); ?>">
+					<?php echo esc_html($post['post_title']); ?>
+				</a>
+			</div>
+		</li>
+	<?php endforeach;
+
+	echo ob_get_clean();
+	wp_die();
+}
+
+// AJAX nạp lại 3 bài đầu (dùng cho nút "Thu gọn")
+add_action('wp_ajax_load_recent_posts', 'load_recent_posts_callback');
+add_action('wp_ajax_nopriv_load_recent_posts', 'load_recent_posts_callback');
+
+function load_recent_posts_callback()
+{
+	check_ajax_referer('load_more_posts', 'security');
+
+	$recent_posts = wp_get_recent_posts(array(
+		'numberposts' => 3,
+		'post_status' => 'publish'
+	));
+
+	ob_start();
+	foreach ($recent_posts as $post): ?>
+		<li class="latest-item">
+			<div class="latest-date">
+				<div class="day-month">
+					<span class="day"><?php echo get_the_date('d', $post['ID']); ?></span>
+					<hr class="divider">
+					<span class="month"><?php echo get_the_date('m', $post['ID']); ?></span>
+				</div>
+				<span class="year"><?php echo get_the_date('y', $post['ID']); ?></span>
+			</div>
+			<div class="latest-title">
+				<a href="<?php echo get_permalink($post['ID']); ?>">
+					<?php echo esc_html($post['post_title']); ?>
+				</a>
+			</div>
+		</li>
+	<?php endforeach;
+
+	echo ob_get_clean();
+	wp_die();
+}
+
+add_action('wp_head', function () {
+	echo '<script>var ajaxurl = "' . admin_url('admin-ajax.php') . '";</script>';
+});
+
+
+function enqueue_bootstrap_theme()
+{
+	wp_enqueue_style('bootstrap-css', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
+	wp_enqueue_script('bootstrap-js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js', ['jquery'], null, true);
+}
+add_action('wp_enqueue_scripts', 'enqueue_bootstrap_theme');
+
+//Header CMS
+function custom_enqueue_bootstrap_header()
+{
+	wp_enqueue_style('bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css');
+	wp_enqueue_script('jquery');
+	wp_enqueue_script('bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js', array('jquery'), null, true);
+}
+add_action('wp_enqueue_scripts', 'custom_enqueue_bootstrap_header');
+function custom_enqueue_fontawesome()
+{
+	wp_enqueue_style(
+		'font-awesome-6',
+		'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.8.2/css/all.min.css',
+		array(),
+		'6.8.2'
+	);
+}
+add_action('wp_enqueue_scripts', 'custom_enqueue_fontawesome');
+//Search
+function theme_enqueue_icons()
+{
+	wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css', array(), '6.5.0');
+}
+add_action('wp_enqueue_scripts', 'theme_enqueue_icons');
+
+
+//END
 function twentytwenty_theme_support()
 {
 
@@ -142,8 +253,68 @@ function twentytwenty_theme_support()
 		add_filter('print_scripts_array', array($loader, 'migrate_legacy_strategy_script_data'), 100);
 	}
 }
+// Thêm icon Font Awesome trước link trong widget menu footer
+function my_footer_widget_menu_icons($item_output, $item, $args)
+{
+
+	// chỉ áp dụng cho widget menu trong footer
+	if (isset($args->theme_location) && in_array($args->theme_location, array('footer', 'footer1', 'footer2', 'footer3'))) {
+		$icon = '<i class="fa fa-angle-double-right mr-2"></i>';
+		$item_output = $icon . $item_output;
+	}
+
+	return $item_output;
+}
+
+
+add_filter('walker_nav_menu_start_el', 'my_footer_widget_menu_icons', 10, 3);
+// Thêm icon trước mỗi link trong Footer widgets menu
+function my_footer_widget_icons($title, $item, $args, $depth)
+{
+	// chỉ áp dụng cho menu ở Footer widgets
+	if (isset($args->theme_location) && in_array($args->theme_location, array('footer', 'footer1', 'footer2', 'footer3'))) {
+		$icon = '<i class="fa fa-angle-double-right mr-1"></i>';
+		$title = $icon . $title;
+	}
+	return $title;
+}
+add_filter('nav_menu_item_title', 'my_footer_widget_icons', 10, 4);
 
 add_action('after_setup_theme', 'twentytwenty_theme_support');
+
+function footertheme_enqueue_scripts()
+{
+	wp_enqueue_style('bootstrap4', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
+	//    wp_enqueue_style('fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
+	wp_enqueue_script('jquery');
+	wp_enqueue_script('bootstrap4', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', array('jquery'), null, true);
+}
+add_action('wp_enqueue_scripts', 'footertheme_enqueue_scripts');
+// Đăng ký nhiều vị trí menu cho footer
+function footertheme_register_menus()
+{
+	register_nav_menus(array(
+		'footer1' => __('Footer Cột 1', 'footertheme'),
+		'footer2' => __('Footer Cột 2', 'footertheme'),
+		'footer3' => __('Footer Cột 3', 'footertheme'),
+	));
+}
+add_action('after_setup_theme', 'footertheme_register_menus');
+// Thêm icon vào menu item dựa vào tên menu
+// Thêm icon trước mỗi link menu footer
+function add_icon_to_footer_menu($title, $item, $args, $depth)
+{
+	if (in_array($args->theme_location, array('footer', 'footer1', 'footer2', 'footer3'))) {
+		$icon = '<i class="fa fa-angle-double-right mr-1"></i>';
+		$title = $icon . $title;
+	}
+	return $title;
+}
+add_filter('nav_menu_item_title', 'add_icon_to_footer_menu', 10, 4);
+// Load Bootstrap & Font Awesome
+
+add_action('wp_enqueue_scripts', 'footertheme_enqueue_scripts');
 
 /**
  * REQUIRED FILES
@@ -852,16 +1023,17 @@ function twentytwenty_get_elements_array()
 }
 
 
-function custom_theme_enqueue_assets() {
-    // Bootstrap
-    wp_enqueue_style('bootstrap-css', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
-    wp_enqueue_script('bootstrap-js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js', array('jquery'), null, true);
+function custom_theme_enqueue_assets()
+{
+	// Bootstrap
+	wp_enqueue_style('bootstrap-css', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
+	wp_enqueue_script('bootstrap-js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js', array('jquery'), null, true);
 
-    // Font Awesome
-    wp_enqueue_style('fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+	// Font Awesome
+	wp_enqueue_style('fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
-    // Theme Style
-    wp_enqueue_style('theme-style', get_stylesheet_uri());
+	// Theme Style
+	wp_enqueue_style('theme-style', get_stylesheet_uri());
 }
 add_action('wp_enqueue_scripts', 'custom_theme_enqueue_assets');
 
@@ -872,15 +1044,17 @@ add_theme_support('post-thumbnails');
 add_image_size('fit-thumb', 360, 240, true);
 
 // Đảm bảo mỗi trang chỉ hiển thị số bài cụ thể (ví dụ: 5)
-function custom_posts_per_page($query) {
+function custom_posts_per_page($query)
+{
 	if (!is_admin() && $query->is_main_query() && (is_home() || is_archive())) {
 		$query->set('posts_per_page', 3);
 	}
 }
 add_action('pre_get_posts', 'custom_posts_per_page');
 
-function custom_news_styles() {
-    wp_enqueue_style('news-style', get_template_directory_uri() . '/assets/css/news-style.css');
+function custom_news_styles()
+{
+	wp_enqueue_style('news-style', get_template_directory_uri() . '/assets/css/news-style.css');
 }
 add_action('wp_enqueue_scripts', 'custom_news_styles');
 
