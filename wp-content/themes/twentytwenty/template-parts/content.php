@@ -5,6 +5,7 @@
  */
 
 if (is_single()) { ?>
+    <!-- GIỮ NGUYÊN PHẦN SINGLE POST -->
     <div class="container single-layout">
         <div class="row">
 
@@ -132,40 +133,82 @@ if (is_single()) { ?>
     </div>
 <?php } else { ?>
 
-    <!-- Danh sách bài viết (archive, home, search, v.v.) -->
-    <article <?php post_class('news-item'); ?> id="post-<?php the_ID(); ?>">
-
-        <div class="news-card">
-
-            <!-- Ảnh đại diện -->
-            <?php if (has_post_thumbnail()): ?>
-                <div class="news-thumb">
-                    <a href="<?php the_permalink(); ?>">
-                        <?php the_post_thumbnail('medium_large'); ?>
-                    </a>
-                </div>
-            <?php endif; ?>
-
-            <!-- Cột ngày tháng -->
-            <div class="news-date">
-                <div class="day"><?php echo get_the_date('d'); ?></div>
-                <div class="month">THÁNG <?php echo get_the_date('m'); ?></div>
+    <!-- SIDEBAR XEM NHIỀU BÊN TRÁI + DANH SÁCH BÀI VIẾT -->
+    <div class="archive-layout-wrapper">
+        <!-- Sidebar Xem nhiều bên trái -->
+        <aside class="archive-sidebar">
+            <div class="sidebar-header">
+                <h3 class="sidebar-title">Xem nhiều</h3>
             </div>
+            <div class="sidebar-content">
+                <ul class="sidebar-list">
+                    <?php
+                    // Lấy 8 bài viết có nhiều comment nhất
+                    $popular_posts = new WP_Query(array(
+                        'posts_per_page' => 8,
+                        'orderby' => 'comment_count',
+                        'order' => 'DESC'
+                    ));
 
-            <!-- Nội dung bài viết -->
-            <div class="news-content">
-                <div class="news-text">
-                    <h2 class="news-title">
-                        <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                    </h2>
-                    <div class="news-excerpt">
-                        <?php echo wp_trim_words(get_the_excerpt(), 50, ' [...]'); ?>
+                    if ($popular_posts->have_posts()):
+                        $count = 1;
+                        while ($popular_posts->have_posts()):
+                            $popular_posts->the_post(); ?>
+                            <li class="sidebar-item">
+                                <div class="item-number"><?php echo $count; ?></div>
+                                <div class="item-content">
+                                    <a href="<?php the_permalink(); ?>" class="item-link">
+                                        <?php the_title(); ?>
+                                    </a>
+                                </div>
+                            </li>
+                            <?php $count++; ?>
+                        <?php endwhile;
+                        wp_reset_postdata();
+                    else: ?>
+                        <li class="sidebar-item">Không có bài viết nào.</li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Danh sách bài viết bên phải -->
+        <div class="archive-main-content">
+            <article class="archive-post-item" id="post-<?php the_ID(); ?>">
+                
+                <div class="archive-post-content">
+                    
+                    <!-- Cột số thứ tự bên trái  -->
+                    <div class="archive-number-section">
+                        <div class="number-box">
+                            <div class="post-number"><?php echo $wp_query->current_post + 1; ?></div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
+                    <!-- Nội dung bài viết bên trái -->
+                    <div class="archive-content-section">
+                        <h2 class="archive-post-title">
+                            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                        </h2>
+                        <div class="archive-post-excerpt">
+                            <?php 
+                            $excerpt = get_the_excerpt();
+                            if (empty($excerpt)) {
+                                $content = get_the_content();
+                                $excerpt = wp_trim_words($content, 50, ' [...]');
+                            } else {
+                                $excerpt = wp_trim_words($excerpt, 50, ' [...]');
+                            }
+                            echo $excerpt;
+                            ?>
+                        </div>
+                    </div>
+
+                </div>
+                
+            </article>
         </div>
-    </article>
+    </div>
 
 <?php } ?>
 <script>

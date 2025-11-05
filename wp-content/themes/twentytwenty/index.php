@@ -82,7 +82,44 @@ get_header();
 	
 	<!-- new-content-wrapper -->
 	<div class="new-content-wrapper">
-		<!-- Cột bên trái: Danh sách bài viết -->
+		<!-- Cột bên TRÁI: Xem nhiều - GIỐNG ẢNH 2 -->
+		<aside class="news-sidebar">
+            <div class="sidebar-header">
+                <h3 class="sidebar-title">Xem nhiều</h3>
+            </div>
+            <div class="sidebar-content">
+                <ul class="sidebar-list">
+                    <?php
+                    // Lấy 8 bài viết có nhiều comment nhất
+                    $popular_posts = new WP_Query(array(
+                        'posts_per_page' => 8,
+                        'orderby' => 'comment_count',
+                        'order' => 'DESC'
+                    ));
+
+                    if ($popular_posts->have_posts()):
+                        $count = 1;
+                        while ($popular_posts->have_posts()):
+                            $popular_posts->the_post(); ?>
+                            <li class="sidebar-item">
+                                <div class="item-number"><?php echo $count; ?></div>
+                                <div class="item-content">
+                                    <a href="<?php the_permalink(); ?>" class="item-link">
+                                        <?php the_title(); ?>
+                                    </a>
+                                </div>
+                            </li>
+                            <?php $count++; ?>
+                        <?php endwhile;
+                        wp_reset_postdata();
+                    else: ?>
+                        <li class="sidebar-item">Không có bài viết nào.</li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </aside>
+
+		<!-- Cột bên phải: Danh sách bài viết - GIỮ NGUYÊN -->
 		<div class="news-main">
 			<?php if (have_posts()): ?>
 				<?php while (have_posts()):
@@ -179,34 +216,6 @@ get_header();
 				<p>Không có bài viết nào.</p>
 			<?php endif; ?>
 		</div>
-
-		<!-- Cột bên phải: Bài viết nổi bật -->
-		<aside class="news-sidebar">
-			<h3 class="sidebar-title">Bài viết nổi bật</h3>
-			<ul class="sidebar-list">
-				<?php
-				$featured = new WP_Query(array(
-					'posts_per_page' => 5,
-					'orderby' => 'comment_count',
-				));
-
-				if ($featured->have_posts()):
-					while ($featured->have_posts()):
-						$featured->the_post(); ?>
-						<li class="sidebar-item">
-							<a href="<?php the_permalink(); ?>" class="sidebar-link">
-								<?php if (has_post_thumbnail()): ?>
-									<?php the_post_thumbnail('thumbnail', array('class' => 'sidebar-thumb')); ?>
-								<?php endif; ?>
-								<span class="sidebar-text"><?php the_title(); ?></span>
-							</a>
-						</li>
-					<?php endwhile;
-					wp_reset_postdata();
-				endif;
-				?>
-			</ul>
-		</aside>
 	</div>
 
 </main><!-- #site-content -->
