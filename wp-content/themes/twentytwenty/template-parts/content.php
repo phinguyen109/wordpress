@@ -8,28 +8,43 @@ if (is_single()) { ?>
     <div class="container single-layout">
         <div class="row">
 
-            <!-- Cột categories-->
+            <!-- Cột Categories (chiếm 2 cột) -->
             <div class="col-2 post-sidebar">
                 <?php
-                $categories = get_categories(array(
-                    'orderby' => 'name',
-                    'order' => 'ASC',
-                ));
+                // Lấy các category của bài viết hiện tại
+                $categories = get_the_category();
 
+                // Nếu bài viết có category
                 if (!empty($categories)) {
+
+                    // Lấy thêm 3 category khác (ngoài category hiện tại)
+                    $exclude_ids = wp_list_pluck($categories, 'term_id');
+                    $extra_cats = get_categories(array(
+                        'number' => 3,
+                        'exclude' => $exclude_ids,
+                        'orderby' => 'count',
+                        'order' => 'DESC'
+                    ));
+
+                    // Gộp hai mảng lại (category hiện tại + 3 category khác)
+                    $all_cats = array_merge($categories, $extra_cats);
+
                     echo '<div class="post-categories"><h3>Categories</h3><ul>';
-                    foreach ($categories as $category) {
+
+                    foreach ($all_cats as $category) {
                         echo '<li><a class="post-category" href="' . esc_url(get_category_link($category->term_id)) . '">';
                         echo esc_html($category->name);
                         echo '</a></li>';
                     }
+
                     echo '</ul></div>';
                 }
                 ?>
             </div>
 
-            <!-- Cột nội dung chính -->
-            <div class="col-8 post-main">
+
+            <!-- Cột nội dung chính (chiếm 8 cột, chừa lề phải 2 cột) -->
+            <div class="col-7 post-main">
                 <article <?php post_class('single-post'); ?> id="post-<?php the_ID(); ?>">
 
                     <?php if (has_post_thumbnail()): ?>
@@ -71,12 +86,53 @@ if (is_single()) { ?>
                     </div>
                 </article>
             </div>
-            <div class="col-2"></div>
+            <!-- Bài viết mới nhất (2 cột bên phải) -->
+            <div class="col-3 post-latest">
+                <div class="latest-posts">
+                    <h3>Bài viết mới nhất</h3>
+                    <ul id="latest-post-list">
+                        <?php
+                        $recent_posts = wp_get_recent_posts(array(
+                            'numberposts' => 3,
+                            'post_status' => 'publish'
+                        ));
+
+                        foreach ($recent_posts as $post):
+                            ?>
+                            <li class="latest-item">
+                                <div class="latest-date">
+                                    <div class="day-month">
+                                        <span class="day"><?php echo get_the_date('d', $post['ID']); ?></span>
+                                        <hr class="divider">
+                                        <span class="month"><?php echo get_the_date('m', $post['ID']); ?></span>
+                                    </div>
+                                    <span class="year"><?php echo get_the_date('y', $post['ID']); ?></span>
+                                </div>
+                                <div class="latest-title">
+                                    <a href="<?php echo get_permalink($post['ID']); ?>">
+                                        <?php echo esc_html($post['post_title']); ?>
+                                    </a>
+                                </div>
+                            </li>
+                        <?php endforeach;
+                        wp_reset_query(); ?>
+                    </ul>
+
+                    <!-- Nút bấm -->
+                    <div class="view-all">
+                        <a href="#" id="toggle-posts" data-nonce="<?php echo wp_create_nonce('load_more_posts'); ?>">Xem tất
+                            cả tin tức</a>
+                    </div>
+
+                </div>
+            </div>
+
+
         </div>
     </div>
 <?php } else { ?>
 
-    <!-- Danh sách bài viết -->
+    <!-- Danh sách bài viết (archive, home, search, v.v.) -->
     <article <?php post_class('news-item'); ?> id="post-<?php the_ID(); ?>">
 
         <div class="news-card">
@@ -112,3 +168,36 @@ if (is_single()) { ?>
     </article>
 
 <?php } ?>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const btn = document.getElementById("toggle-posts");
+        const list = document.getElementById("latest-post-list");
+        let expanded = false;
+        const nonce = btn.dataset.nonce;
+
+        btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            btn.textContent = "Đang tải...";
+
+            // Gọi AJAX
+            const action = expanded ? "load_recent_posts" : "load_all_posts";
+
+            fetch(ajaxurl, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `action=${action}&security=${nonce}`
+            })
+                .then(res => res.text())
+                .then(html => {
+                    list.innerHTML = html;
+                    expanded = !expanded;
+                    btn.textContent = expanded ? "Thu gọn" : "Xem tất cả tin tức";
+                })
+                .catch(err => {
+                    console.error(err);
+                    btn.textContent = "Lỗi! Thử lại";
+                });
+        });
+    });
+
+</script>
