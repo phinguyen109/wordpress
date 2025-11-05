@@ -6778,7 +6778,7 @@ a.to-the-top>* {
 /* Thanh sidebar */
 .news-sidebar {
 	flex: 1;
-	background: rgb(176, 223, 247);
+	background: #fff;
 	padding: 20px;
 	border: 1px solid #ddd;
 	height: fit-content;
@@ -7546,4 +7546,202 @@ body.single .entry-content p {
 
 .view-all a:hover {
 	text-decoration: underline;
+}
+
+/* Archive */
+.archive-layout-wrapper {
+    display: flex;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.archive-sidebar {
+    width: 300px;
+    flex-shrink: 0;
+}
+
+.archive-main-content {
+    flex: 1;
+}
+
+/* SIDEBAR XEM NHIỀU - GIỐNG ẢNH 2 */
+.sidebar-header {
+    border-bottom: 2px solid #000;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+}
+
+.sidebar-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.sidebar-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sidebar-item:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+.item-number {
+    background: #000;
+    color: #fff;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 12px;
+    flex-shrink: 0;
+    font-family: Arial, sans-serif;
+}
+
+.item-content {
+    flex: 1;
+}
+
+.item-link {
+    color: #000;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.4;
+    display: block;
+    font-family: Arial, sans-serif;
+}
+
+.item-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* DANH SÁCH BÀI VIẾT */
+.archive-post-item {
+    margin-bottom: 0;
+    padding: 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.archive-post-item:last-child {
+    border-bottom: none;
+}
+
+.archive-post-content {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px 0;
+    width: 100%;
+}
+
+/* Cột số thứ tự  */
+.archive-number-section {
+    flex-shrink: 0;
+    width: 50px;
+    margin-right: 20px;
+}
+
+.number-box {
+    text-align: center;
+    background: #f8f9fa;
+    padding: 10px 5px;
+    border-radius: 4px;
+}
+
+.post-number {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+    line-height: 1;
+    font-family: Arial, sans-serif;
+}
+
+/* Nội dung bài viết */
+.archive-content-section {
+    flex: 1;
+    min-width: 0;
+}
+
+.archive-post-title {
+    font-size: 18px;
+    line-height: 1.4;
+    margin: 0 0 10px 0;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+}
+
+.archive-post-title a {
+    color: #000;
+    text-decoration: none;
+}
+
+.archive-post-title a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.archive-post-excerpt {
+    color: #333;
+    line-height: 1.6;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+/* XÓA ĐƯỜNG KẺ NGANG CŨ */
+.archive-divider {
+    display: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .archive-layout-wrapper {
+        flex-direction: column;
+        gap: 20px;
+        padding: 10px;
+    }
+    
+    .archive-sidebar {
+        width: 100%;
+        order: -1;
+        margin-bottom: 20px;
+    }
+    
+    .archive-post-content {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .archive-number-section {
+        width: 100%;
+        margin-right: 0;
+    }
+    
+    .number-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 10px;
+        width: fit-content;
+    }
 }
