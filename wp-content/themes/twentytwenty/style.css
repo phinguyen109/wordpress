@@ -7567,7 +7567,7 @@ body.single .entry-content p {
     flex: 1;
 }
 
-/* SIDEBAR XEM NHIỀU - GIỐNG ẢNH 2 */
+/* SIDEBAR XEM NHIỀU  */
 .sidebar-header {
     border-bottom: 2px solid #000;
     margin-bottom: 20px;
@@ -7603,15 +7603,15 @@ body.single .entry-content p {
 }
 
 .item-number {
-    background: #000;
-    color: #fff;
+    background: #fff;
+    color: #000;
     width: 24px;
     height: 24px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 18px;
     font-weight: bold;
     margin-right: 12px;
     flex-shrink: 0;
