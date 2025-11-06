@@ -119,7 +119,7 @@ get_header();
             </div>
         </aside>
 
-		<!-- Cột bên phải: Danh sách bài viết - GIỮ NGUYÊN -->
+		<!-- Cột GIỮA: Danh sách bài viết -->
 		<div class="news-main">
 			<?php if (have_posts()): ?>
 				<?php while (have_posts()):
@@ -216,9 +216,40 @@ get_header();
 				<p>Không có bài viết nào.</p>
 			<?php endif; ?>
 		</div>
+
+		<!-- Cột bên PHẢI: Comments - HIỂN THỊ COMMENTS THỰC TẾ -->
+		<aside class="comments-sidebar">
+			<div class="sidebar-header">
+				<h3 class="sidebar-title">Comments</h3>
+			</div>
+			<div class="sidebar-content">
+				<ul class="comments-list">
+					<?php
+					// Lấy 6 comments mới nhất
+					$recent_comments = get_comments(array(
+						'number' => 6,
+						'status' => 'approve'
+					));
+
+					if ($recent_comments):
+						foreach ($recent_comments as $comment): ?>
+							<li class="comment-item">
+								<div class="comment-text">
+									<?php echo wp_trim_words($comment->comment_content, 10, '...'); ?>
+								</div>
+							</li>
+						<?php endforeach;
+					else: ?>
+						<li class="comment-item">
+							<div class="comment-text">Chưa có comment nào.</div>
+						</li>
+					<?php endif; ?>
+				</ul>
+			</div>
+		</aside>
 	</div>
 
 </main><!-- #site-content -->
 
 <?php get_template_part('template-parts/footer-menus-widgets'); ?>
-<?php get_footer();
+<?php get_footer(); ?>
