@@ -7818,3 +7818,25 @@ body.single .entry-content p {
 	color: #999eab;
 	text-decoration: underline;
 }
+
+/* pages */
+.search-results-header {
+    margin: 0 auto 40px;          /* căn giữa toàn khối */
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eaeaea;
+    text-align: center;           /* căn giữa nội dung */
+    max-width: 800px;             /* giới hạn độ rộng để không quá dài */
+}
+
+.search-results-main-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.search-results-count {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}

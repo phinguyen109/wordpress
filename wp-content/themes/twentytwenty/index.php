@@ -79,49 +79,63 @@ get_header();
 		</header>
 
 	<?php endif; ?>
-	
+	<?php if (have_posts() && is_search()): ?>
+    <div class="search-results-header">
+        <h1 class="search-results-main-title">
+            Results for "<?php echo esc_html(get_search_query()); ?>"
+        </h1>
+        <?php global $wp_query; ?>
+        <p class="search-results-count">
+            We found <?php echo number_format_i18n($wp_query->found_posts); ?>
+            <?php echo $wp_query->found_posts == 1 ? 'result' : 'results'; ?> for your search.
+        </p>
+    </div>
+<?php endif; ?>
 	<!-- new-content-wrapper -->
 	<div class="new-content-wrapper">
-		<!-- Cột bên TRÁI: Xem nhiều - GIỐNG ẢNH 2 -->
-		<aside class="news-sidebar">
-            <div class="sidebar-header">
-                <h3 class="sidebar-title">Xem nhiều</h3>
-            </div>
-            <div class="sidebar-content">
-                <ul class="sidebar-list">
-                    <?php
-                    // Lấy 8 bài viết có nhiều comment nhất
-                    $popular_posts = new WP_Query(array(
-                        'posts_per_page' => 8,
-                        'orderby' => 'comment_count',
-                        'order' => 'DESC'
-                    ));
+		<!-- Cột bên TRÁI: Xem nhiều -->
+<?php if (!is_search()): ?>
+    <aside class="news-sidebar">
+        <div class="sidebar-header">
+            <h3 class="sidebar-title">Xem nhiều</h3>
+        </div>
+        <div class="sidebar-content">
+            <ul class="sidebar-list">
+                <?php
+                // Lấy 8 bài viết có nhiều comment nhất
+                $popular_posts = new WP_Query(array(
+                    'posts_per_page' => 8,
+                    'orderby' => 'comment_count',
+                    'order' => 'DESC'
+                ));
 
-                    if ($popular_posts->have_posts()):
-                        $count = 1;
-                        while ($popular_posts->have_posts()):
-                            $popular_posts->the_post(); ?>
-                            <li class="sidebar-item">
-                                <div class="item-number"><?php echo $count; ?></div>
-                                <div class="item-content">
-                                    <a href="<?php the_permalink(); ?>" class="item-link">
-                                        <?php the_title(); ?>
-                                    </a>
-                                </div>
-                            </li>
-                            <?php $count++; ?>
-                        <?php endwhile;
-                        wp_reset_postdata();
-                    else: ?>
-                        <li class="sidebar-item">Không có bài viết nào.</li>
-                    <?php endif; ?>
-                </ul>
-            </div>
-        </aside>
+                if ($popular_posts->have_posts()):
+                    $count = 1;
+                    while ($popular_posts->have_posts()):
+                        $popular_posts->the_post(); ?>
+                        <li class="sidebar-item">
+                            <div class="item-number"><?php echo $count; ?></div>
+                            <div class="item-content">
+                                <a href="<?php the_permalink(); ?>" class="item-link">
+                                    <?php the_title(); ?>
+                                </a>
+                            </div>
+                        </li>
+                        <?php $count++; ?>
+                    <?php endwhile;
+                    wp_reset_postdata();
+                else: ?>
+                    <li class="sidebar-item">Không có bài viết nào.</li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    </aside>
+<?php endif; ?>
 
 		<!-- Cột GIỮA: Danh sách bài viết -->
 		<div class="news-main">
 			<?php if (have_posts()): ?>
+				
 				<?php while (have_posts()):
 					the_post(); ?>
 					<article id="post-<?php the_ID(); ?>" <?php post_class('news-item'); ?>>
@@ -218,35 +232,38 @@ get_header();
 		</div>
 
 		<!-- Cột bên PHẢI: Comments - HIỂN THỊ COMMENTS THỰC TẾ -->
-		<aside class="comments-sidebar">
-			<div class="sidebar-header">
-				<h3 class="sidebar-title">Comments</h3>
-			</div>
-			<div class="sidebar-content">
-				<ul class="comments-list">
-					<?php
-					// Lấy 6 comments mới nhất
-					$recent_comments = get_comments(array(
-						'number' => 6,
-						'status' => 'approve'
-					));
+		<?php if (!is_search()): ?>
+    <aside class="comments-sidebar">
+        <div class="sidebar-header">
+            <h3 class="sidebar-title">Comments</h3>
+        </div>
+        <div class="sidebar-content">
+            <ul class="comments-list">
+                <?php
+                // Lấy 6 comments mới nhất
+                $recent_comments = get_comments(array(
+                    'number' => 6,
+                    'status' => 'approve'
+                ));
 
-					if ($recent_comments):
-						foreach ($recent_comments as $comment): ?>
-							<li class="comment-item">
-								<div class="comment-text">
-									<?php echo wp_trim_words($comment->comment_content, 10, '...'); ?>
-								</div>
-							</li>
-						<?php endforeach;
-					else: ?>
-						<li class="comment-item">
-							<div class="comment-text">Chưa có comment nào.</div>
-						</li>
-					<?php endif; ?>
-				</ul>
-			</div>
-		</aside>
+                if ($recent_comments):
+                    foreach ($recent_comments as $comment): ?>
+                        <li class="comment-item">
+                            <div class="comment-text">
+                                <?php echo wp_trim_words($comment->comment_content, 10, '...'); ?>
+                            </div>
+                        </li>
+                    <?php endforeach;
+                else: ?>
+                    <li class="comment-item">
+                        <div class="comment-text">Chưa có comment nào.</div>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    </aside>
+<?php endif; ?>
+
 	</div>
 
 </main><!-- #site-content -->
