@@ -54,7 +54,8 @@ get_header();
 				<?php endif; ?>
 
 				<div class="header-search-form">
-					<form role="search" method="get" class="custom-search-form" action="<?php echo esc_url(home_url('/')); ?>">
+					<form role="search" method="get" class="custom-search-form"
+						action="<?php echo esc_url(home_url('/')); ?>">
 						<div class="search-form-inner">
 							<input type="search" class="search-field" placeholder="Q Search topics or keywords"
 								value="<?php echo get_search_query(); ?>" name="s" aria-label="Search topics or keywords" />
@@ -154,11 +155,18 @@ get_header();
 					]); ?>
 				</div>
 
+				<!-- 🧩 Latest News Timeline (chỉ hiển thị khi search) -->
+				<?php if (is_search()): ?>
+					<?php latest_news_timeline(4); ?>
+				<?php endif; ?>
+
+
 			<?php elseif (is_search()): ?>
 				<div class="no-search-results-wrapper">
 					<div class="search-suggestions-box">
 						<div class="search-suggestions-label">Q Search topics or keywords</div>
-						<form role="search" method="get" class="custom-search-form" action="<?php echo esc_url(home_url('/')); ?>">
+						<form role="search" method="get" class="custom-search-form"
+							action="<?php echo esc_url(home_url('/')); ?>">
 							<div class="search-form-inner">
 								<input type="search" class="search-field" placeholder=""
 									value="<?php echo get_search_query(); ?>" name="s" />
@@ -172,7 +180,7 @@ get_header();
 			<?php endif; ?>
 		</div>
 
-		<!-- ✅ Cột bên PHẢI: Comments (đã sửa dùng class mới để không bị đè CSS) -->
+		<!-- ✅ Cột bên PHẢI: Comments -->
 		<aside class="comments-sidebar">
 			<div class="sidebar-header">
 				<h3 class="sidebar-title">Comments</h3>
@@ -201,7 +209,8 @@ get_header();
 									<div class="search-comment-body">
 										<h4 class="search-comment-author"><?php echo esc_html($comment->comment_author); ?></h4>
 										<p class="search-comment-text"><?php echo esc_html($content); ?></p>
-										<a href="<?php echo esc_url(get_comment_link($comment)); ?>" class="search-comment-link">View Post »</a>
+										<a href="<?php echo esc_url(get_comment_link($comment)); ?>" class="search-comment-link">View
+											Post »</a>
 									</div>
 								</div>
 								<?php
@@ -218,11 +227,14 @@ get_header();
 						if ($recent_comments):
 							foreach ($recent_comments as $comment): ?>
 								<li class="comment-item">
-									<div class="comment-text"><?php echo wp_trim_words($comment->comment_content, 10, '...'); ?></div>
+									<div class="comment-text"><?php echo wp_trim_words($comment->comment_content, 10, '...'); ?>
+									</div>
 								</li>
 							<?php endforeach;
 						else: ?>
-							<li class="comment-item"><div class="comment-text">Chưa có comment nào.</div></li>
+							<li class="comment-item">
+								<div class="comment-text">Chưa có comment nào.</div>
+							</li>
 						<?php endif; ?>
 					</ul>
 				<?php endif; ?>
