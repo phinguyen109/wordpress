@@ -6713,7 +6713,7 @@ a.to-the-top>* {
 	align-items: center;
 	padding: 20px 25px;
 	flex: 1;
-		letter-spacing: 0.5px;
+	letter-spacing: 0.5px;
 }
 
 /* Ngày tháng */
@@ -6755,7 +6755,7 @@ a.to-the-top>* {
 	text-decoration: none;
 	color: #337ab7;
 	transition: color 0.2s;
-	font-size: large; 
+	font-size: large;
 
 }
 
@@ -7821,84 +7821,88 @@ body.single .entry-content p {
 
 /* pages */
 .search-results-header {
-    margin: 0 auto 40px;          /* căn giữa toàn khối */
-    padding-bottom: 20px;
-    border-bottom: 1px solid #eaeaea;
-    text-align: center;           /* căn giữa nội dung */
-    max-width: 800px;             /* giới hạn độ rộng để không quá dài */
+	margin: 0 auto 40px;
+	/* căn giữa toàn khối */
+	padding-bottom: 20px;
+	border-bottom: 1px solid #eaeaea;
+	text-align: center;
+	/* căn giữa nội dung */
+	max-width: 800px;
+	/* giới hạn độ rộng để không quá dài */
 }
 
 .search-results-main-title {
-    font-size: 32px;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 10px;
+	font-size: 32px;
+	font-weight: 700;
+	color: #333;
+	margin-bottom: 10px;
 }
 
 .search-results-count {
-    font-size: 16px;
-    color: #666;
-    margin: 0;
+	font-size: 16px;
+	color: #666;
+	margin: 0;
 }
 
 /* comments */
 .comment-style14-wrapper .comment-box {
-    margin-top: 30px !important;
+	margin-top: 30px !important;
 	margin: 40px;
 }
+
 /* CSS Test end */
 
 .comment-style14-wrapper .comment-box img {
-    width: 50px;
-    height: 50px;
+	width: 50px;
+	height: 50px;
 }
 
 .comment-style14-wrapper .comment-box .media-left {
-    padding-right: 10px;
-    width: 65px;
+	padding-right: 10px;
+	width: 65px;
 }
 
 .comment-style14-wrapper .comment-box .media-body p {
-    border: 1px solid #ddd;
-    padding: 10px;
+	border: 1px solid #ddd;
+	padding: 10px;
 }
 
 .comment-style14-wrapper .comment-box .media-body .media p {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 .comment-style14-wrapper .comment-box .media-heading {
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    padding: 7px 10px;
-    position: relative;
-    margin-bottom: -1px;
+	background-color: #f5f5f5;
+	border: 1px solid #ddd;
+	padding: 7px 10px;
+	position: relative;
+	margin-bottom: -1px;
 }
 
 .comment-style14-wrapper .comment-box .media-heading:before {
-    content: "";
-    width: 12px;
-    height: 12px;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-width: 1px 0 0 1px;
-    -webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-    position: absolute;
-    top: 10px;
-    left: -6px;
+	content: "";
+	width: 12px;
+	height: 12px;
+	background-color: #f5f5f5;
+	border: 1px solid #ddd;
+	border-width: 1px 0 0 1px;
+	-webkit-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+	position: absolute;
+	top: 10px;
+	left: -6px;
 }
 
 /* Responsive cho nested replies */
 @media (max-width: 768px) {
-    .comment-style14-wrapper .comment-box .media {
-        margin-top: 15px;
-    }
-    
-    .comment-style14-wrapper .comment-box img {
-        width: 40px;
-        height: 40px;
-    }
+	.comment-style14-wrapper .comment-box .media {
+		margin-top: 15px;
+	}
+
+	.comment-style14-wrapper .comment-box img {
+		width: 40px;
+		height: 40px;
+	}
 }
 
 /* Kiểu hộp comment khi search */
@@ -7914,29 +7918,35 @@ body.single .entry-content p {
 	border: 1px solid #eee;
 	transition: all 0.2s ease;
 }
+
 .search-comment-box:hover {
 	background: #fff;
-	box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
+
 .search-comment-avatar img {
 	border-radius: 50%;
 	width: 48px;
 	height: 48px;
 	margin-right: 10px;
 }
+
 .search-comment-author {
 	font-weight: 600;
 	margin-bottom: 4px;
 }
+
 .search-comment-text {
 	font-size: 14px;
 	color: #555;
 }
+
 .search-comment-link {
 	font-size: 13px;
 	color: #0073aa;
 	text-decoration: none;
 }
+
 .search-comment-link:hover {
 	text-decoration: underline;
 }
@@ -7946,12 +7956,14 @@ body.single .entry-content p {
 .latest-news-timeline {
 	width: 100%;
 	max-width: 700px;
-	margin: 40px auto; /* ✅ canh giữa ngang */
+	margin: 40px auto;
+	/* ✅ canh giữa ngang */
 	text-align: left;
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 	display: flex;
 	flex-direction: column;
-	align-items: center; /* ✅ canh giữa nội dung nếu có độ rộng nhỏ hơn */
+	align-items: center;
+	/* ✅ canh giữa nội dung nếu có độ rộng nhỏ hơn */
 }
 
 .timeline-heading {
@@ -7959,7 +7971,7 @@ body.single .entry-content p {
 	font-weight: 600;
 	color: #222;
 	margin-bottom: 25px;
-	text-align: center; 
+	text-align: center;
 }
 
 /* Danh sách timeline */
@@ -7968,7 +7980,7 @@ ul.timeline {
 	position: relative;
 	margin: 0;
 	padding-left: 70px;
-	width: 100%; 
+	width: 100%;
 }
 
 /* Đường dọc */
@@ -7983,13 +7995,13 @@ ul.timeline::before {
 }
 
 /* Mỗi item */
-ul.timeline > li {
+ul.timeline>li {
 	margin: 30px 0;
 	position: relative;
 }
 
 /* Vòng tròn */
-ul.timeline > li::before {
+ul.timeline>li::before {
 	content: '';
 	background: #fff;
 	border: 3px solid #22c0e8;
@@ -8042,7 +8054,7 @@ ul.timeline > li::before {
 }
 
 /* Hiệu ứng hover cho timeline item */
-ul.timeline > li:hover::before {
+ul.timeline>li:hover::before {
 	background: #22c0e8;
 	transition: 0.3s;
 }
@@ -8062,7 +8074,7 @@ ul.timeline > li:hover::before {
 		left: 20px;
 	}
 
-	ul.timeline > li::before {
+	ul.timeline>li::before {
 		left: 11px;
 	}
 
@@ -8077,3 +8089,114 @@ ul.timeline > li:hover::before {
 }
 
 
+    .popular-posts-grid .sidebar-header {
+        border-bottom: 3px solid #000;
+        padding-bottom: 10px;
+        margin-bottom: 18px;
+    }
+
+    .popular-posts-grid .sidebar-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #000;
+        margin: 0;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    .popular-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px 20px;
+        padding: 0;
+    }
+
+    .popular-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        font-size: 0.94rem;
+        line-height: 1.5;
+        padding: 10px 0;
+        border-bottom: 1px dashed #ccc;
+    }
+
+    .popular-item:last-child {
+        border-bottom: none;
+    }
+
+    /* SỐ THỨ TỰ: CHỮ ĐEN, KHÔNG NỀN TRÒN */
+    .item-rank {
+        flex: 0 0 28px;
+        font-weight: bold;
+        font-size: 2.2rem;
+        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+    }
+
+    .item-title {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .item-title a {
+        color: #222;
+        text-decoration: none;
+        font-weight: 500;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.45;
+        font-size: 1.2rem;
+    }
+
+    .item-title a:hover {
+        color: #0066cc;
+    }
+
+    .item-views {
+        flex: 0 0 auto;
+        color: #888;
+        font-size: 0.82rem;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .item-views::before {
+        content: "";
+        font-size: 0.8rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .popular-grid {
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+        .popular-item {
+            padding: 8px 0;
+            gap: 10px;
+        }
+        .item-rank {
+            font-size: 1rem;
+            min-width: 24px;
+        }
+        .popular-posts-grid .sidebar-title {
+            font-size: 1.3rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .popular-item {
+            font-size: 0.9rem;
+        }
+        .item-title a {
+            font-size: 0.9rem;
+        }
+    }

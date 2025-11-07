@@ -613,6 +613,18 @@ function twentytwenty_sidebar_registration()
 			)
 		)
 	);
+
+	// pages #13.
+	register_sidebar(
+		array_merge(
+			$shared_args,
+			array(
+				'name' => __('Pages #13', 'twentytwenty'),
+				'id' => 'sidebar-13',
+				'description' => __('Widgets in this area will be displayed in the pages.', 'twentytwenty'),
+			)
+		)
+	);
 }
 
 add_action('widgets_init', 'twentytwenty_sidebar_registration');
@@ -1195,3 +1207,83 @@ function latest_news_timeline($number = 4) {
 		echo '<p>Không có bài viết mới.</p>';
 	}
 }
+
+
+// CUSTOM WIDGET: PAGE LIST FOR SIDEBAR 13
+class Page_List_Widget extends WP_Widget
+{
+
+	function __construct()
+	{
+		parent::__construct(
+			'page_list_widget',
+			__('Danh sách Trang (Sidebar #13)', 'twentytwenty'),
+			['description' => __('Hiển thị danh sách các trang dạng list có hình đại diện.', 'twentytwenty')]
+		);
+	}
+
+	function widget($args, $instance)
+	{
+		echo $args['before_widget'];
+		if (!empty($instance['title'])) {
+			echo $args['before_title'] . apply_filters('widget_title', $instance['title']) . $args['after_title'];
+		}
+
+		// Lấy danh sách các trang
+		$pages = get_pages([
+			'sort_column' => 'menu_order',
+			'sort_order' => 'asc',
+			'post_status' => 'publish',
+			'number' => 5, // số lượng trang muốn hiển thị
+		]);
+
+		if (!empty($pages)) {
+			echo '<div class="page-list-widget">';
+			foreach ($pages as $page) {
+				$thumbnail = get_the_post_thumbnail_url($page->ID, 'medium');
+				if (!$thumbnail) {
+					$thumbnail = 'https://via.placeholder.com/300x150?text=No+Image';
+				}
+				$excerpt = $page->post_excerpt ? $page->post_excerpt : wp_trim_words($page->post_content, 20);
+
+				echo '<div class="page-item">';
+				echo '<a href="' . get_permalink($page->ID) . '" class="page-thumb"><img src="' . esc_url($thumbnail) . '" alt=""></a>';
+				echo '<div class="page-info">';
+				echo '<h4 class="page-title"><a href="' . get_permalink($page->ID) . '">' . esc_html($page->post_title) . '</a></h4>';
+				echo '<p class="page-excerpt">' . esc_html($excerpt) . '</p>';
+				echo '</div>';
+				echo '</div>';
+			}
+			echo '</div>';
+		} else {
+			echo '<p>Chưa có trang nào.</p>';
+		}
+
+		echo $args['after_widget'];
+	}
+
+	function form($instance)
+	{
+		$title = !empty($instance['title']) ? $instance['title'] : __('Trang mới nhất', 'twentytwenty');
+		?>
+		<p>
+			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Tiêu đề:'); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
+				name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>">
+		</p>
+		<?php
+	}
+
+	function update($new_instance, $old_instance)
+	{
+		$instance = [];
+		$instance['title'] = (!empty($new_instance['title'])) ? strip_tags($new_instance['title']) : '';
+		return $instance;
+	}
+}
+
+function register_page_list_widget()
+{
+	register_widget('Page_List_Widget');
+}
+add_action('widgets_init', 'register_page_list_widget');

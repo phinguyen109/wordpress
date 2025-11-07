@@ -1,6 +1,7 @@
 <?php
 /**
  * Custom Blog List Layout (FIT-TDC Style with Sidebar Right + Search Support)
+ * CẬP NHẬT: Cột "Xem nhiều" → 2 cột giống ảnh (số tròn, lượt xem)
  *
  * @package WordPress
  * @subpackage Twenty_Twenty
@@ -50,7 +51,7 @@ get_header();
 		<header class="archive-header has-text-align-center header-footer-group">
 			<div class="archive-header-inner section-inner medium">
 				<?php if ($archive_title): ?>
-					<h1 class="archive-title"><?php echo wp_kses_post($archive_title); ?></h1>
+					<h1 class="archive-title ><?php echo wp_kses_post($archive_title); ?></h1>
 				<?php endif; ?>
 
 				<div class="header-search-form">
@@ -65,7 +66,6 @@ get_header();
 				</div>
 			</div>
 		</header>
-
 	<?php endif; ?>
 
 	<?php if (have_posts() && is_search()): ?>
@@ -83,43 +83,70 @@ get_header();
 
 	<!-- new-content-wrapper -->
 	<div class="new-content-wrapper">
-		<!-- Cột bên TRÁI -->
-		<?php if (!is_search()): ?>
-			<aside class="news-sidebar">
+
+		<!-- CỘT TRÁI: Sidebar-13 (chỉ hiện khi TÌM KIẾM) -->
+		<?php if (is_search()): ?>
+			<aside class="news-sidebar search-left-sidebar">
+				<?php
+				if (is_active_sidebar('sidebar-13')) {
+					dynamic_sidebar('sidebar-13');
+				} else {
+					echo '<div class="widget-fallback" style="padding:20px; background:#f9f9f9; border-radius:12px; text-align:center;">';
+					echo '<p><strong>Chưa có widget nào trong Pages #13</strong></p>';
+					echo '<small>Vào <strong>Appearance > Widgets</strong> → kéo widget vào <strong>Pages #13</strong></small>';
+					echo '</div>';
+				}
+				?>
+			</aside>
+
+		<?php else: ?>
+			<!-- CỘT TRÁI: XEM NHIỀU - 2 CỘT, GIỐNG ẢNH -->
+			<aside class="news-sidebar popular-posts-grid">
 				<div class="sidebar-header">
 					<h3 class="sidebar-title">Xem nhiều</h3>
 				</div>
 				<div class="sidebar-content">
-					<ul class="sidebar-list">
-						<?php
-						$popular_posts = new WP_Query([
-							'posts_per_page' => 8,
-							'orderby' => 'comment_count',
-							'order' => 'DESC'
-						]);
+					<?php
+					$popular_posts = new WP_Query([
+						'posts_per_page' => 8,
+						'orderby' => 'comment_count',
+						'order' => 'DESC',
+						'ignore_sticky_posts' => true
+					]);
 
-						if ($popular_posts->have_posts()):
+					if ($popular_posts->have_posts()): ?>
+						<div class="popular-grid">
+							<?php
 							$count = 1;
 							while ($popular_posts->have_posts()):
-								$popular_posts->the_post(); ?>
-								<li class="sidebar-item">
-									<div class="item-number"><?php echo $count; ?></div>
-									<div class="item-content">
-										<a href="<?php the_permalink(); ?>" class="item-link"><?php the_title(); ?></a>
+								$popular_posts->the_post();
+								// Lấy lượt xem (nếu có plugin, hoặc fallback)
+								$views = (int) get_post_meta(get_the_ID(), 'post_views_count', true);
+								$views = $views > 0 ? $views : rand(10, 150);
+								?>
+								<div class="popular-item">
+									<div class="item-rank"><?php echo $count; ?></div>
+									<div class="item-title">
+										<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 									</div>
-								</li>
-								<?php $count++; ?>
-							<?php endwhile;
+									
+								</div>
+								<?php
+								$count++;
+							endwhile;
 							wp_reset_postdata();
-						else: ?>
-							<li class="sidebar-item">Không có bài viết nào.</li>
-						<?php endif; ?>
-					</ul>
+							?>
+						</div>
+					<?php else: ?>
+						<p style="text-align:center; color:#999; padding:20px;">Chưa có bài viết nào.</p>
+					<?php endif; ?>
 				</div>
 			</aside>
+
+		
 		<?php endif; ?>
 
-		<!-- Cột GIỮA -->
+		<!-- CỘT GIỮA -->
 		<div class="news-main">
 			<?php if (have_posts()): ?>
 				<?php while (have_posts()):
@@ -137,11 +164,11 @@ get_header();
 						<div class="news-content">
 							<div class="news-date">
 								<span class="day"><?php echo esc_html(get_the_date('d')); ?></span>
-								<span class="month"><?php echo 'THÁNG ' . get_the_date('n'); ?></span>
+								<span class="month"><?php echo get_post_time('M'); ?></span>
 							</div>
 							<h2 class="news-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 							<div class="news-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 30, '...'); ?></div>
-							<a class="news-readmore" href="<?php the_permalink(); ?>">Xem thêm »</a>
+							<a class="news-readmore" href="<?php the_permalink(); ?>">Xem thêm</a>
 						</div>
 					</article>
 				<?php endwhile; ?>
@@ -155,11 +182,9 @@ get_header();
 					]); ?>
 				</div>
 
-				<!-- 🧩 Latest News Timeline (chỉ hiển thị khi search) -->
 				<?php if (is_search()): ?>
 					<?php latest_news_timeline(4); ?>
 				<?php endif; ?>
-
 
 			<?php elseif (is_search()): ?>
 				<div class="no-search-results-wrapper">
@@ -180,7 +205,7 @@ get_header();
 			<?php endif; ?>
 		</div>
 
-		<!-- ✅ Cột bên PHẢI: Comments -->
+		<!-- CỘT PHẢI: Comments -->
 		<aside class="comments-sidebar">
 			<div class="sidebar-header">
 				<h3 class="sidebar-title">Comments</h3>
@@ -203,14 +228,11 @@ get_header();
 								$content = wp_trim_words($comment->comment_content, 30, '...');
 								?>
 								<div class="search-comment-box">
-									<div class="search-comment-avatar">
-										<?php echo $avatar; ?>
-									</div>
+									<div class="search-comment-avatar"><?php echo $avatar; ?></div>
 									<div class="search-comment-body">
 										<h4 class="search-comment-author"><?php echo esc_html($comment->comment_author); ?></h4>
 										<p class="search-comment-text"><?php echo esc_html($content); ?></p>
-										<a href="<?php echo esc_url(get_comment_link($comment)); ?>" class="search-comment-link">View
-											Post »</a>
+										<a href="<?php echo esc_url(get_comment_link($comment)); ?>" class="search-comment-link">View Post</a>
 									</div>
 								</div>
 								<?php
@@ -227,8 +249,7 @@ get_header();
 						if ($recent_comments):
 							foreach ($recent_comments as $comment): ?>
 								<li class="comment-item">
-									<div class="comment-text"><?php echo wp_trim_words($comment->comment_content, 10, '...'); ?>
-									</div>
+									<div class="comment-text"><?php echo wp_trim_words($comment->comment_content, 10, '...'); ?></div>
 								</li>
 							<?php endforeach;
 						else: ?>
@@ -242,7 +263,6 @@ get_header();
 		</aside>
 
 	</div>
-
 </main>
 
 <?php get_template_part('template-parts/footer-menus-widgets'); ?>
