@@ -7940,3 +7940,140 @@ body.single .entry-content p {
 .search-comment-link:hover {
 	text-decoration: underline;
 }
+
+/* last posts */
+/* LATEST NEWS TIMELINE SECTION */
+.latest-news-timeline {
+	width: 100%;
+	max-width: 700px;
+	margin: 40px auto; /* ✅ canh giữa ngang */
+	text-align: left;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	display: flex;
+	flex-direction: column;
+	align-items: center; /* ✅ canh giữa nội dung nếu có độ rộng nhỏ hơn */
+}
+
+.timeline-heading {
+	font-size: 22px;
+	font-weight: 600;
+	color: #222;
+	margin-bottom: 25px;
+	text-align: center; 
+}
+
+/* Danh sách timeline */
+ul.timeline {
+	list-style: none;
+	position: relative;
+	margin: 0;
+	padding-left: 70px;
+	width: 100%; 
+}
+
+/* Đường dọc */
+ul.timeline::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 30px;
+	width: 2px;
+	height: 100%;
+	background: #d4d9df;
+}
+
+/* Mỗi item */
+ul.timeline > li {
+	margin: 30px 0;
+	position: relative;
+}
+
+/* Vòng tròn */
+ul.timeline > li::before {
+	content: '';
+	background: #fff;
+	border: 3px solid #22c0e8;
+	display: inline-block;
+	position: absolute;
+	border-radius: 50%;
+	left: -48px;
+	width: 18px;
+	height: 18px;
+	top: 0;
+	z-index: 2;
+}
+
+/* --- Header chứa tiêu đề & ngày --- */
+.timeline-header {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	align-items: start;
+	column-gap: 40px;
+	width: 100%;
+}
+
+.timeline-title {
+	font-size: 15px;
+	color: #007bff;
+	text-decoration: none;
+	word-break: break-word;
+	line-height: 1.4;
+}
+
+.timeline-title:hover {
+	text-decoration: underline;
+}
+
+.timeline-date {
+	font-size: 15px;
+	color: #007bff;
+	white-space: nowrap;
+	text-align: right;
+	margin-top: 2px;
+	line-height: 1.4;
+}
+
+.timeline-excerpt {
+	font-size: 15px;
+	color: #444;
+	line-height: 1.6;
+	margin-top: 6px;
+	text-align: justify;
+}
+
+/* Hiệu ứng hover cho timeline item */
+ul.timeline > li:hover::before {
+	background: #22c0e8;
+	transition: 0.3s;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.latest-news-timeline {
+		margin: 30px auto;
+		padding: 0 10px;
+	}
+
+	ul.timeline {
+		padding-left: 50px;
+	}
+
+	ul.timeline::before {
+		left: 20px;
+	}
+
+	ul.timeline > li::before {
+		left: 11px;
+	}
+
+	.timeline-header {
+		grid-template-columns: 1fr;
+		row-gap: 6px;
+	}
+
+	.timeline-date {
+		text-align: left;
+	}
+}
+
+
