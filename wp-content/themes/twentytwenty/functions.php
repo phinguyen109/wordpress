@@ -1163,3 +1163,35 @@ function register_comment_style14_widget() {
 add_action('widgets_init', 'register_comment_style14_widget');
 
 
+// ✅ Hiển thị danh sách bài viết mới dạng timeline (dành cho trang tìm kiếm)
+function latest_news_timeline($number = 4) {
+	$recent_posts = new WP_Query([
+		'posts_per_page' => $number,
+		'post_status'    => 'publish',
+		'orderby'        => 'date',
+		'order'          => 'DESC',
+	]);
+
+	if ($recent_posts->have_posts()) {
+		echo '<div class="latest-news-timeline">';
+		echo '<h3 class="timeline-heading">Latest News</h3>';
+		echo '<ul class="timeline">';
+
+		while ($recent_posts->have_posts()) {
+			$recent_posts->the_post(); ?>
+			<li>
+				<div class="timeline-header">
+					<a href="<?php the_permalink(); ?>" class="timeline-title"><?php the_title(); ?></a>
+					<span class="timeline-date"><?php echo get_the_date('j F, Y'); ?></span>
+				</div>
+				<p class="timeline-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 50, '...'); ?></p>
+			</li>
+			<?php
+		}
+
+		echo '</ul></div>';
+		wp_reset_postdata();
+	} else {
+		echo '<p>Không có bài viết mới.</p>';
+	}
+}
