@@ -1058,4 +1058,140 @@ function custom_news_styles()
 }
 add_action('wp_enqueue_scripts', 'custom_news_styles');
 
+class Comment_Style14_Widget extends WP_Widget
+{
+    function __construct()
+    {
+        parent::__construct(
+            'comment_style14_widget',
+            __('Comments (Sidebar #14)', 'twentytwenty'),
+            ['description' => __('Hiển thị bình luận mới nhất có avatar và nội dung.', 'twentytwenty')]
+        );
+    }
 
+    function widget($args, $instance)
+    {
+        echo $args['before_widget'];
+
+        $title = !empty($instance['title']) ? $instance['title'] : __('Comments', 'twentytwenty');
+        $number = !empty($instance['number']) ? absint($instance['number']) : 5;
+        
+        echo $args['before_title'] . esc_html($title) . $args['after_title'];
+
+        // Lấy comments mới nhất (cả parent và reply)
+        $comments = get_comments([
+            'number' => $number,
+            'status' => 'approve',
+            'type'   => 'comment',
+        ]);
+
+        if (!empty($comments)) {
+            echo '<div class="sidebar-comments-wrapper">';
+            foreach ($comments as $comment) {
+                $this->render_comment_item($comment);
+            }
+            echo '</div>';
+        } else {
+            echo '<p class="no-comments">' . __('Chưa có comment nào.', 'twentytwenty') . '</p>';
+        }
+
+        echo $args['after_widget'];
+    }
+
+    private function render_comment_item($comment)
+    {
+        $avatar = get_avatar($comment->comment_author_email, 48);
+        $content = wp_trim_words($comment->comment_content, 30, '...');
+        $author = esc_html($comment->comment_author);
+        $post_title = get_the_title($comment->comment_post_ID);
+        $comment_link = get_comment_link($comment);
+        ?>
+        
+        <div class="comment-box">
+            <div class="comment-avatar">
+                <?php echo $avatar; ?>
+            </div>
+            <div class="comment-body">
+                <h4 class="comment-author"><?php echo $author; ?></h4>
+                <p class="comment-text"><?php echo esc_html($content); ?></p>
+                <a href="<?php echo esc_url($comment_link); ?>" class="comment-link">
+                    <?php _e('View Post »', 'twentytwenty'); ?>
+                </a>
+            </div>
+        </div>
+        
+        <?php
+    }
+
+    function form($instance)
+    {
+        $title = !empty($instance['title']) ? $instance['title'] : __('Comments', 'twentytwenty');
+        $number = !empty($instance['number']) ? absint($instance['number']) : 5;
+        ?>
+        <p>
+            <label for="<?php echo $this->get_field_id('title'); ?>">Tiêu đề:</label>
+            <input class="widefat"
+                id="<?php echo $this->get_field_id('title'); ?>"
+                name="<?php echo $this->get_field_name('title'); ?>"
+                type="text"
+                value="<?php echo esc_attr($title); ?>">
+        </p>
+        <p>
+            <label for="<?php echo $this->get_field_id('number'); ?>">Số comment hiển thị:</label>
+            <input class="widefat"
+                id="<?php echo $this->get_field_id('number'); ?>"
+                name="<?php echo $this->get_field_name('number'); ?>"
+                type="number"
+                min="1"
+                max="20"
+                value="<?php echo esc_attr($number); ?>">
+        </p>
+        <?php
+    }
+
+    function update($new_instance, $old_instance)
+    {
+        $instance = [];
+        $instance['title'] = (!empty($new_instance['title'])) ? strip_tags($new_instance['title']) : '';
+        $instance['number'] = (!empty($new_instance['number'])) ? absint($new_instance['number']) : 5;
+        return $instance;
+    }
+}
+function register_comment_style14_widget() {
+    register_widget('Comment_Style14_Widget');
+}
+add_action('widgets_init', 'register_comment_style14_widget');
+
+
+// ✅ Hiển thị danh sách bài viết mới dạng timeline (dành cho trang tìm kiếm)
+function latest_news_timeline($number = 4) {
+	$recent_posts = new WP_Query([
+		'posts_per_page' => $number,
+		'post_status'    => 'publish',
+		'orderby'        => 'date',
+		'order'          => 'DESC',
+	]);
+
+	if ($recent_posts->have_posts()) {
+		echo '<div class="latest-news-timeline">';
+		echo '<h3 class="timeline-heading">Latest News</h3>';
+		echo '<ul class="timeline">';
+
+		while ($recent_posts->have_posts()) {
+			$recent_posts->the_post(); ?>
+			<li>
+				<div class="timeline-header">
+					<a href="<?php the_permalink(); ?>" class="timeline-title"><?php the_title(); ?></a>
+					<span class="timeline-date"><?php echo get_the_date('j F, Y'); ?></span>
+				</div>
+				<p class="timeline-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 50, '...'); ?></p>
+			</li>
+			<?php
+		}
+
+		echo '</ul></div>';
+		wp_reset_postdata();
+	} else {
+		echo '<p>Không có bài viết mới.</p>';
+	}
+}

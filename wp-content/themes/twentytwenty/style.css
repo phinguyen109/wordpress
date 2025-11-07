@@ -7840,3 +7840,240 @@ body.single .entry-content p {
     color: #666;
     margin: 0;
 }
+
+/* comments */
+.comment-style14-wrapper .comment-box {
+    margin-top: 30px !important;
+	margin: 40px;
+}
+/* CSS Test end */
+
+.comment-style14-wrapper .comment-box img {
+    width: 50px;
+    height: 50px;
+}
+
+.comment-style14-wrapper .comment-box .media-left {
+    padding-right: 10px;
+    width: 65px;
+}
+
+.comment-style14-wrapper .comment-box .media-body p {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.comment-style14-wrapper .comment-box .media-body .media p {
+    margin-bottom: 0;
+}
+
+.comment-style14-wrapper .comment-box .media-heading {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    padding: 7px 10px;
+    position: relative;
+    margin-bottom: -1px;
+}
+
+.comment-style14-wrapper .comment-box .media-heading:before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-width: 1px 0 0 1px;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    position: absolute;
+    top: 10px;
+    left: -6px;
+}
+
+/* Responsive cho nested replies */
+@media (max-width: 768px) {
+    .comment-style14-wrapper .comment-box .media {
+        margin-top: 15px;
+    }
+    
+    .comment-style14-wrapper .comment-box img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Kiểu hộp comment khi search */
+.search-comment-box {
+	display: flex;
+	align-items: flex-start;
+	background: #fafafa;
+	border-radius: 10px;
+	padding: 12px;
+	margin-bottom: 12px;
+	width: 100%;
+	max-width: 360px;
+	border: 1px solid #eee;
+	transition: all 0.2s ease;
+}
+.search-comment-box:hover {
+	background: #fff;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.search-comment-avatar img {
+	border-radius: 50%;
+	width: 48px;
+	height: 48px;
+	margin-right: 10px;
+}
+.search-comment-author {
+	font-weight: 600;
+	margin-bottom: 4px;
+}
+.search-comment-text {
+	font-size: 14px;
+	color: #555;
+}
+.search-comment-link {
+	font-size: 13px;
+	color: #0073aa;
+	text-decoration: none;
+}
+.search-comment-link:hover {
+	text-decoration: underline;
+}
+
+/* last posts */
+/* LATEST NEWS TIMELINE SECTION */
+.latest-news-timeline {
+	width: 100%;
+	max-width: 700px;
+	margin: 40px auto; /* ✅ canh giữa ngang */
+	text-align: left;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	display: flex;
+	flex-direction: column;
+	align-items: center; /* ✅ canh giữa nội dung nếu có độ rộng nhỏ hơn */
+}
+
+.timeline-heading {
+	font-size: 22px;
+	font-weight: 600;
+	color: #222;
+	margin-bottom: 25px;
+	text-align: center; 
+}
+
+/* Danh sách timeline */
+ul.timeline {
+	list-style: none;
+	position: relative;
+	margin: 0;
+	padding-left: 70px;
+	width: 100%; 
+}
+
+/* Đường dọc */
+ul.timeline::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 30px;
+	width: 2px;
+	height: 100%;
+	background: #d4d9df;
+}
+
+/* Mỗi item */
+ul.timeline > li {
+	margin: 30px 0;
+	position: relative;
+}
+
+/* Vòng tròn */
+ul.timeline > li::before {
+	content: '';
+	background: #fff;
+	border: 3px solid #22c0e8;
+	display: inline-block;
+	position: absolute;
+	border-radius: 50%;
+	left: -48px;
+	width: 18px;
+	height: 18px;
+	top: 0;
+	z-index: 2;
+}
+
+/* --- Header chứa tiêu đề & ngày --- */
+.timeline-header {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	align-items: start;
+	column-gap: 40px;
+	width: 100%;
+}
+
+.timeline-title {
+	font-size: 15px;
+	color: #007bff;
+	text-decoration: none;
+	word-break: break-word;
+	line-height: 1.4;
+}
+
+.timeline-title:hover {
+	text-decoration: underline;
+}
+
+.timeline-date {
+	font-size: 15px;
+	color: #007bff;
+	white-space: nowrap;
+	text-align: right;
+	margin-top: 2px;
+	line-height: 1.4;
+}
+
+.timeline-excerpt {
+	font-size: 15px;
+	color: #444;
+	line-height: 1.6;
+	margin-top: 6px;
+	text-align: justify;
+}
+
+/* Hiệu ứng hover cho timeline item */
+ul.timeline > li:hover::before {
+	background: #22c0e8;
+	transition: 0.3s;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.latest-news-timeline {
+		margin: 30px auto;
+		padding: 0 10px;
+	}
+
+	ul.timeline {
+		padding-left: 50px;
+	}
+
+	ul.timeline::before {
+		left: 20px;
+	}
+
+	ul.timeline > li::before {
+		left: 11px;
+	}
+
+	.timeline-header {
+		grid-template-columns: 1fr;
+		row-gap: 6px;
+	}
+
+	.timeline-date {
+		text-align: left;
+	}
+}
+
+
