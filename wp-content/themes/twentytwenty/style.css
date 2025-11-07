@@ -7840,3 +7840,103 @@ body.single .entry-content p {
     color: #666;
     margin: 0;
 }
+
+/* comments */
+.comment-style14-wrapper .comment-box {
+    margin-top: 30px !important;
+	margin: 40px;
+}
+/* CSS Test end */
+
+.comment-style14-wrapper .comment-box img {
+    width: 50px;
+    height: 50px;
+}
+
+.comment-style14-wrapper .comment-box .media-left {
+    padding-right: 10px;
+    width: 65px;
+}
+
+.comment-style14-wrapper .comment-box .media-body p {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.comment-style14-wrapper .comment-box .media-body .media p {
+    margin-bottom: 0;
+}
+
+.comment-style14-wrapper .comment-box .media-heading {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    padding: 7px 10px;
+    position: relative;
+    margin-bottom: -1px;
+}
+
+.comment-style14-wrapper .comment-box .media-heading:before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-width: 1px 0 0 1px;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    position: absolute;
+    top: 10px;
+    left: -6px;
+}
+
+/* Responsive cho nested replies */
+@media (max-width: 768px) {
+    .comment-style14-wrapper .comment-box .media {
+        margin-top: 15px;
+    }
+    
+    .comment-style14-wrapper .comment-box img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Kiểu hộp comment khi search */
+.search-comment-box {
+	display: flex;
+	align-items: flex-start;
+	background: #fafafa;
+	border-radius: 10px;
+	padding: 12px;
+	margin-bottom: 12px;
+	width: 100%;
+	max-width: 360px;
+	border: 1px solid #eee;
+	transition: all 0.2s ease;
+}
+.search-comment-box:hover {
+	background: #fff;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.search-comment-avatar img {
+	border-radius: 50%;
+	width: 48px;
+	height: 48px;
+	margin-right: 10px;
+}
+.search-comment-author {
+	font-weight: 600;
+	margin-bottom: 4px;
+}
+.search-comment-text {
+	font-size: 14px;
+	color: #555;
+}
+.search-comment-link {
+	font-size: 13px;
+	color: #0073aa;
+	text-decoration: none;
+}
+.search-comment-link:hover {
+	text-decoration: underline;
+}
