@@ -1,113 +1,173 @@
 <?php
 /**
- * Custom comments template for Twenty Twenty theme.
+ * The template file for displaying the comments and comment form for the
+ * Twenty Twenty theme.
  *
  * @package WordPress
  * @subpackage Twenty_Twenty
  * @since Twenty Twenty 1.0
  */
 
-if ( post_password_required() ) {
-	return;
+/*
+ * If the current post is protected by a password and
+ * the visitor has not yet entered the password we will
+ * return early without loading the comments.
+*/
+if (post_password_required()) {
+    return;
 }
-?>
 
-<?php if ( have_comments() ) : ?>
-	<div class="comments" id="comments">
+if ($comments) {
+    ?>
 
-		<?php $comments_number = get_comments_number(); ?>
+    <div class="comments" id="comments">
 
-		<div class="comments-header section-inner small max-percentage">
-			<h2 class="comment-reply-title">
-				<?php
-				if ( ! have_comments() ) {
-					_e( 'Leave a comment', 'twentytwenty' );
-				} elseif ( 1 === (int) $comments_number ) {
-					printf( _x( 'One reply on &ldquo;%s&rdquo;', 'comments title', 'twentytwenty' ), get_the_title() );
-				} else {
-					printf(
-						_nx(
-							'%1$s reply on &ldquo;%2$s&rdquo;',
-							'%1$s replies on &ldquo;%2$s&rdquo;',
-							$comments_number,
-							'comments title',
-							'twentytwenty'
-						),
-						number_format_i18n( $comments_number ),
-						get_the_title()
-					);
-				}
-				?>
-			</h2>
-		</div><!-- .comments-header -->
+        <?php
+        $comments_number = get_comments_number();
+        ?>
 
-		<div class="comments-inner section-inner thin max-percentage">
+        <div class="comments-header section-inner small max-percentage">
 
-			<?php
-			wp_list_comments(
-				array(
-					'walker'      => new TwentyTwenty_Walker_Comment(),
-					'avatar_size' => 120,
-					'style'       => 'div',
-				)
-			);
+            <h2 class="comment-reply-title post-comments-title">
+            <?php
+                if (!have_comments()) {
+                    _e('Leave a comment', 'twentytwenty');
+                } elseif ('1' === $comments_number) {
+                    /* translators: %s: Post title. */
+                    printf(_x('One reply on &ldquo;%s&rdquo;', 'comments title', 'twentytwenty'), get_the_title());
+                } else {
+                    printf(
+                    /* translators: 1: Number of comments, 2: Post title. */
+                        _nx(
+                            '%1$s reply on &ldquo;%2$s&rdquo;',
+                            '%1$s replies on &ldquo;%2$s&rdquo;',
+                            $comments_number,
+                            'comments title',
+                            'twentytwenty'
+                        ),
+                        number_format_i18n($comments_number),
+                        get_the_title()
+                    );
+                }
 
-			$comment_pagination = paginate_comments_links(
-				array(
-					'echo'      => false,
-					'end_size'  => 0,
-					'mid_size'  => 0,
-					'next_text' => __( 'Newer Comments', 'twentytwenty' ) . ' <span aria-hidden="true">&rarr;</span>',
-					'prev_text' => '<span aria-hidden="true">&larr;</span> ' . __( 'Older Comments', 'twentytwenty' ),
-				)
-			);
+                ?>
+            </h2><!-- .comments-title -->
 
-			if ( $comment_pagination ) :
-				$pagination_classes = '';
+        </div><!-- .comments-header -->
 
-				if ( false === strpos( $comment_pagination, 'prev page-numbers' ) ) {
-					$pagination_classes = ' only-next';
-				}
-				?>
+        <div class="comments-inner section-inner thin max-percentage">
 
-				<nav class="comments-pagination pagination<?php echo esc_attr( $pagination_classes ); ?>" aria-label="<?php esc_attr_e( 'Comments', 'twentytwenty' ); ?>">
-					<?php echo wp_kses_post( $comment_pagination ); ?>
-				</nav>
+            <?php
+            $comments_list = get_comments(array(
+                'post_id' => get_the_ID(),
+                'status' => 'approve',
+                'orderby' => 'comment_date_gmt',
+                'order' => 'ASC'
+            ));
 
-			<?php endif; ?>
+            if ($comments_list) {
+                echo '<div class="comments-area">';
+                echo '<h3 class="comments-title">Comments</h3>';
+                echo '<div class="comments-list">';
+                foreach ($comments_list as $comment) {
+                    echo '<div class="comment-item">';
+                    echo '<a href="' . esc_url(get_comment_link($comment->comment_ID)) . '">';
+                    echo esc_html($comment->comment_content);
+                    echo '</a>';
+                    echo '</div>';
+                }
+                echo '</div>';
+                echo '</div>';
+            }
 
-		</div><!-- .comments-inner -->
-	</div><!-- .comments -->
-<?php endif; ?>
 
-<?php if ( comments_open() ) : ?>
-	<div class="card shadow-sm border-0 mt-4 mb-5">
-		<div class="card-header bg-white">
-			<ul class="nav nav-tabs card-header-tabs">
-				<li class="nav-item">
-					<a class="nav-link active" href="#"><?php esc_html_e( 'Make a Post', 'twentytwenty' ); ?></a>
-				</li>
-			</ul>
-		</div>
+            $comment_pagination = paginate_comments_links(
+                array(
+                    'echo' => false,
+                    'end_size' => 0,
+                    'mid_size' => 0,
+                    'next_text' => __('Newer Comments', 'twentytwenty') . ' <span aria-hidden="true">&rarr;</span>',
+                    'prev_text' => '<span aria-hidden="true">&larr;</span> ' . __('Older Comments', 'twentytwenty'),
+                )
+            );
 
-		<div class="card-body">
-			<form action="<?php echo esc_url( site_url( '/wp-comments-post.php' ) ); ?>" method="post" class="post-form">
-				<div class="form-group mb-3">
-					<textarea id="comment" name="comment" class="form-control" rows="3" placeholder="<?php esc_attr_e( 'What are you thinking...', 'twentytwenty' ); ?>" required></textarea>
-				</div>
-				<div class="text-right">
-					<button type="submit" class="btn btn-primary"><?php esc_html_e( 'Share', 'twentytwenty' ); ?></button>
-				</div>
+            if ($comment_pagination) {
+                $pagination_classes = '';
 
-				<?php
-				comment_id_fields();
-				wp_nonce_field( 'comment_form_action', 'comment_form_nonce' );
-				do_action( 'comment_form', get_the_ID() );
-				?>
-			</form>
-		</div>
-	</div>
-<?php else : ?>
-	<p class="no-comments text-muted"><?php esc_html_e( 'Comments are closed.', 'twentytwenty' ); ?></p>
-<?php endif; ?>
+                // If we're only showing the "Next" link, add a class indicating so.
+                if (false === strpos($comment_pagination, 'prev page-numbers')) {
+                    $pagination_classes = ' only-next';
+                }
+                ?>
 
+                <nav class="comments-pagination pagination<?php echo $pagination_classes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static output ?>"
+                     aria-label="<?php esc_attr_e('Comments', 'twentytwenty'); ?>">
+                    <?php echo wp_kses_post($comment_pagination); ?>
+                </nav>
+
+                <?php
+            }
+            ?>
+
+        </div><!-- .comments-inner -->
+
+    </div><!-- comments -->
+
+    <?php
+}
+
+if (comments_open() || pings_open()) {
+
+    if ($comments) {
+        echo '<hr class="styled-separator is-style-wide" aria-hidden="true" />';
+    }
+
+    comment_form(array(
+        'class_form' => 'comment-form card my-5',
+        'title_reply_before' => '
+			<div class="card-header">
+				<ul class="nav nav-tabs card-header-tabs">
+					<li class="nav-item">
+						<a class="nav-link active" id="posts-tab" href="#" role="tab">',
+        'title_reply' => esc_html__('Make a Post', 'textdomain'),
+        'title_reply_after' => '</a></li></ul></div>
+			<div class="card-body">',
+
+        'comment_notes_before' => '',
+        'comment_notes_after' => '</div>', // đóng card-body
+
+        'logged_in_as' => '', // ẩn “Logged in as...”
+
+        'fields' => array(
+            'author' => '',
+            'email' => '',
+            'url' => '',
+        ),
+
+        // Không dùng class nội bộ -> clean HTML
+        'comment_field' => '
+			<textarea id="comment" name="comment" placeholder="' . esc_attr__('What are you thinking...', 'textdomain') . '" required></textarea>',
+
+        'submit_button' => '
+			<div class="text-right">
+				<button type="submit">share</button>
+			</div>',
+    ));
+
+
+} elseif (is_single()) {
+
+    if ($comments) {
+        echo '<hr class="styled-separator is-style-wide" aria-hidden="true" />';
+    }
+
+    ?>
+
+    <div class="comment-respond" id="respond">
+
+        <p class="comments-closed"><?php _e('Comments are closed.', 'twentytwenty'); ?></p>
+
+    </div><!-- #respond -->
+
+    <?php
+}
