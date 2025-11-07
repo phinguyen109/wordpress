@@ -84,40 +84,97 @@ get_header();
 	<!-- new-content-wrapper -->
 	<div class="new-content-wrapper">
 		<!-- Cột bên TRÁI -->
-		<?php if (!is_search()): ?>
-			<aside class="news-sidebar">
-				<div class="sidebar-header">
-					<h3 class="sidebar-title">Xem nhiều</h3>
-				</div>
-				<div class="sidebar-content">
-					<ul class="sidebar-list">
-						<?php
-						$popular_posts = new WP_Query([
-							'posts_per_page' => 8,
-							'orderby' => 'comment_count',
-							'order' => 'DESC'
-						]);
+		<aside class="news-sidebar">
+    <?php if (is_search()): ?>
+        <!-- Hiển thị TRANG MỚI NHẤT khi ở trang tìm kiếm -->
+        <div class="sidebar-header">
+            <h3 class="sidebar-title">Trang mới nhất</h3>
+        </div>
+        <div class="sidebar-content">
+            <?php
+            $newest_posts = new WP_Query([
+                'posts_per_page' => 3,
+                'orderby' => 'date',
+                'order' => 'DESC'
+            ]);
 
-						if ($popular_posts->have_posts()):
-							$count = 1;
-							while ($popular_posts->have_posts()):
-								$popular_posts->the_post(); ?>
-								<li class="sidebar-item">
-									<div class="item-number"><?php echo $count; ?></div>
-									<div class="item-content">
-										<a href="<?php the_permalink(); ?>" class="item-link"><?php the_title(); ?></a>
-									</div>
-								</li>
-								<?php $count++; ?>
-							<?php endwhile;
-							wp_reset_postdata();
-						else: ?>
-							<li class="sidebar-item">Không có bài viết nào.</li>
-						<?php endif; ?>
-					</ul>
-				</div>
-			</aside>
-		<?php endif; ?>
+            if ($newest_posts->have_posts()):
+                while ($newest_posts->have_posts()):
+                    $newest_posts->the_post(); ?>
+                    
+                    <div class="latest-post-item" style="margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 15px;">
+                        <div class="latest-post-thumb" style="margin-bottom: 10px;">
+                            <a href="<?php the_permalink(); ?>">
+                                <?php if (has_post_thumbnail()) {
+                                    the_post_thumbnail('medium', ['style' => 'width:100%; height:auto; border-radius:8px;']);
+                                } else {
+                                    echo '<img src="' . get_template_directory_uri() . '/assets/img/default.jpg" alt="no image" style="width:100%; border-radius:8px;">';
+                                } ?>
+                            </a>
+                        </div>
+
+                        <div class="latest-post-info">
+                            <p class="latest-post-category" style="font-size: 14px; color: #007bff; margin-bottom: 5px;">
+                                <?php
+                                $category = get_the_category();
+                                if ($category) {
+                                    echo esc_html($category[0]->name);
+                                }
+                                ?>
+                            </p>
+                            <h4 class="latest-post-title" style="font-size: 16px; margin-bottom: 5px;">
+                                <a href="<?php the_permalink(); ?>" style="color:#000; text-decoration:none;">
+                                    <?php the_title(); ?>
+                                </a>
+                            </h4>
+                            <p class="latest-post-excerpt" style="font-size: 14px; color: #555;">
+                                <?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?>
+                            </p>
+                        </div>
+                    </div>
+
+                <?php endwhile;
+                wp_reset_postdata();
+            else: ?>
+                <p>Không có bài viết mới.</p>
+            <?php endif; ?>
+        </div>
+
+    <?php else: ?>
+        <!-- Giữ nguyên phần XEM NHIỀU khi không ở trang tìm kiếm -->
+        <div class="sidebar-header">
+            <h3 class="sidebar-title">Xem nhiều</h3>
+        </div>
+        <div class="sidebar-content">
+            <ul class="sidebar-list">
+                <?php
+                $popular_posts = new WP_Query([
+                    'posts_per_page' => 8,
+                    'orderby' => 'comment_count',
+                    'order' => 'DESC'
+                ]);
+
+                if ($popular_posts->have_posts()):
+                    $count = 1;
+                    while ($popular_posts->have_posts()):
+                        $popular_posts->the_post(); ?>
+                        <li class="sidebar-item">
+                            <div class="item-number"><?php echo $count; ?></div>
+                            <div class="item-content">
+                                <a href="<?php the_permalink(); ?>" class="item-link"><?php the_title(); ?></a>
+                            </div>
+                        </li>
+                        <?php $count++; ?>
+                    <?php endwhile;
+                    wp_reset_postdata();
+                else: ?>
+                    <li class="sidebar-item">Không có bài viết nào.</li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+</aside>
+
 
 		<!-- Cột GIỮA -->
 		<div class="news-main">
@@ -139,9 +196,12 @@ get_header();
 								<span class="day"><?php echo esc_html(get_the_date('d')); ?></span>
 								<span class="month"><?php echo 'THÁNG ' . get_the_date('n'); ?></span>
 							</div>
-							<h2 class="news-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-							<div class="news-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 30, '...'); ?></div>
-							<a class="news-readmore" href="<?php the_permalink(); ?>">Xem thêm »</a>
+							<div class="flex">
+									<h2 class="news-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+							<div class="news-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 30, '[...]'); ?></div>
+							<!-- <a class="news-readmore" href="<?php the_permalink(); ?>">[...]</a> -->
+							</div>
+						
 						</div>
 					</article>
 				<?php endwhile; ?>

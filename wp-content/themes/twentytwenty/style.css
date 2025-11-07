@@ -8075,5 +8075,17 @@ ul.timeline > li:hover::before {
 		text-align: left;
 	}
 }
+.latest-post-item {
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.latest-post-item:hover {
+  transform: translateY(-3px);
+}
+
+.latest-post-title a:hover {
+  color: #007bff;
+}
 
 
